@@ -3,6 +3,7 @@
  */
 package ecologylab.services.authentication;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -155,7 +156,16 @@ class User extends ElementState implements AuthLevels, Mappable<String>
 			{
 				MessageDigest encrypter = MessageDigest.getInstance("SHA-256");
 
-				encrypter.update(plaintextPassword.getBytes());
+				try 
+				{
+	        encrypter.update(plaintextPassword.getBytes("UTF8"));
+        } 
+				catch (UnsupportedEncodingException e) 
+				{
+	        System.err.println("Unsupported Enconding: UTF8: this should " +
+	        										"never happen all JVM's required to implement UTF8");
+	        e.printStackTrace();
+        }
 
 				// convert to normal characters and return as a String
 				return new String(Base64Coder.encode(encrypter.digest()));
