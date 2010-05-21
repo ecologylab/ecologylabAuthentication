@@ -5,6 +5,7 @@ package ecologylab.services.authentication;
 
 import java.util.HashMap;
 
+import ecologylab.services.authentication.translationScope.UserTranslationScope;
 import ecologylab.services.exceptions.SaveFailedException;
 import ecologylab.xml.SaverState;
 
@@ -25,13 +26,14 @@ public class AuthenticationListXMLImpl<U extends User> extends SaverState implem
 		AuthenticationList<U>
 {
 	@xml_map
+	@xml_scope(UserTranslationScope.NAME)
 	private HashMap<String, U>	authList	= new HashMap<String, U>();
 
 	@xml_attribute
-	private long										lastUID		= 0;
+	private long								lastUID		= 0;
 
 	@xml_attribute
-	private boolean									autoSave	= false;
+	private boolean							autoSave	= false;
 
 	/**
 	 * No-argument constructor for XML translation.

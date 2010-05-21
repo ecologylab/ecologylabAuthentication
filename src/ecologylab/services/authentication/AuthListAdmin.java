@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import ecologylab.services.authentication.translationScope.AuthServerTranslations;
 import ecologylab.services.exceptions.SaveFailedException;
 import ecologylab.xml.ElementState;
 import ecologylab.xml.XMLTools;
