@@ -9,11 +9,11 @@ import ecologylab.services.authentication.AuthenticationList;
 import ecologylab.services.authentication.User;
 import ecologylab.services.authentication.OnlineAuthenticatorHashMapImpl;
 import ecologylab.services.authentication.listener.AuthenticationListener;
-import ecologylab.services.authentication.logging.AuthLogging;
-import ecologylab.services.authentication.logging.AuthenticationOp;
 import ecologylab.services.authentication.messages.AuthMessages;
 import ecologylab.services.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.services.authentication.translationScope.AuthServerTranslations;
+import ecologylab.services.logging.AuthLogging;
+import ecologylab.services.logging.AuthenticationOp;
 import ecologylab.services.logging.Logging;
 import ecologylab.xml.ElementState;
 import ecologylab.xml.TranslationScope;
@@ -85,7 +85,7 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends
 	}
 
 	/**
-	 * @see ecologylab.services.authentication.logging.AuthLogging#addLoggingListener(ecologylab.services.logging.Logging)
+	 * @see ecologylab.services.logging.AuthLogging#addLoggingListener(ecologylab.services.logging.Logging)
 	 */
 	public void addLoggingListener(Logging log)
 	{

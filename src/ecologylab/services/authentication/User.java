@@ -7,7 +7,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import lib.Base64Coder;
+import biz.source_code.Base64Coder;
+
 import ecologylab.xml.ElementState;
 import ecologylab.xml.xml_inherit;
 import ecologylab.xml.ElementState.xml_other_tags;

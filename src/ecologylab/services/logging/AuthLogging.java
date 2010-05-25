@@ -1,4 +1,4 @@
-package ecologylab.services.authentication.logging;
+package ecologylab.services.logging;
 
 import ecologylab.services.logging.Logging;
 
