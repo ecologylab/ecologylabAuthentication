@@ -6,7 +6,6 @@ package ecologylab.appframework.types.pref;
 import ecologylab.appframework.types.prefs.Pref;
 import ecologylab.services.authentication.AuthenticationListXMLImpl;
 import ecologylab.xml.xml_inherit;
-import ecologylab.xml.ElementState.xml_nested;
 
 /**
  * A preference that is an AuthenticationList.

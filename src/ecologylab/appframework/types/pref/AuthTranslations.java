@@ -3,9 +3,10 @@
  */
 package ecologylab.appframework.types.pref;
 
-import ecologylab.appframework.types.prefs.PrefTranslations;
+import ecologylab.appframework.types.prefs.PrefsTranslationsProvider;
 import ecologylab.generic.Debug;
 import ecologylab.services.authentication.AuthenticationList;
+import ecologylab.services.authentication.AuthenticationListXMLImpl;
 import ecologylab.services.authentication.User;
 import ecologylab.xml.TranslationScope;
 
@@ -17,21 +18,20 @@ import ecologylab.xml.TranslationScope;
  */
 public class AuthTranslations extends Debug
 {
-	/**
-	 * Package name
-	 */
-	private static final String	PACKAGE_NAME		= "ecologylab.appframework.types.prefs";
-
+	public static final String NAME = "AUTH_TRANSLATIONS";
+	
 	/**
 	 * What we should be translating to/from xml
 	 */
 	private static final Class	TRANSLATIONS[]	=
 																							{
 
-																							PrefAuthList.class, AuthenticationList.class,
-			User.class,
+																							AuthenticationList.class,
+			AuthenticationListXMLImpl.class, User.class,
 
 																							};
+	
+	private static final TranslationScope[] INHERITED_TRANSLATIONS = { PrefsTranslationsProvider.get() };
 
 	/**
 	 * Just prevent anyone from new'ing this.
@@ -45,6 +45,7 @@ public class AuthTranslations extends Debug
 	 */
 	public static TranslationScope get()
 	{
-		return TranslationScope.get(PACKAGE_NAME, PrefTranslations.get(), TRANSLATIONS);
+		return TranslationScope.get(NAME, INHERITED_TRANSLATIONS,
+				TRANSLATIONS, PrefSetAuthClassProvider.STATIC_INSTANCE.provideClasses());
 	}
 }
