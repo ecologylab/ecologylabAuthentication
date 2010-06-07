@@ -19,6 +19,7 @@ import ecologylab.xml.ElementState;
 import ecologylab.xml.TranslationScope;
 import ecologylab.xml.XMLTranslationException;
 
+
 public class NIODatagramAuthServer<A extends User, S extends Scope> extends
 		NIODatagramServer<S> implements AuthServerRegistryObjects, AuthMessages, AuthLogging,
 		Authenticatable<A>

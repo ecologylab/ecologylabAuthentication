@@ -16,6 +16,12 @@ import ecologylab.services.distributed.exception.MessageTooLargeException;
 import ecologylab.services.messages.ResponseMessage;
 import ecologylab.xml.TranslationScope;
 
+/**
+ * Authentication subclass of NIODatagram Client.
+ * @author bilhamil
+ *
+ * @param <S>  application scope type parameter
+ */
 public class NIODatagramAuthClient<S extends Scope> extends NIODatagramClient<S> implements
 AuthClientRegistryObjects, AuthConstants, AuthMessages
 {
@@ -29,7 +35,19 @@ AuthClientRegistryObjects, AuthConstants, AuthMessages
 	/** Indicates that this is logging out. */
 	private boolean							loggingOut	= false;
 
-	
+	/**
+	 * Authentication client constructor. Initializes new datagram client and 
+	 * starts the connection process. Specifies the authentication
+	 * entry through the entry parameter.
+	 * 
+	 * @param serverAddress
+	 * @param localAddress local address of the interface that you want to establish the client on
+	 * @param translationScope
+	 * @param objectRegistry application scope
+	 * @param entry authentication credentials for this client
+	 * @param useCompression whether or not to use compression
+	 * @param timeout timeout of messages that are not responded to
+	 */
 	public NIODatagramAuthClient(InetSocketAddress serverAddress,
 			InetSocketAddress localAddress, TranslationScope translationScope,
 			S objectRegistry, User entry, boolean useCompression, int timeout)
@@ -42,6 +60,18 @@ AuthClientRegistryObjects, AuthConstants, AuthMessages
 		this.entry = entry;
 	}
 
+	/**
+	 * Authentication client constructor. Initializes new datagram client and 
+	 * starts the connection process. Specifies the authentication
+	 * entry through the entry parameter.
+	 * 
+	 * @param serverAddress
+	 * @param translationScope
+	 * @param objectRegistry application scope
+	 * @param entry authentication credentials for this client
+	 * @param useCompression whether or not to use compression
+	 * @param timeout timeout of messages that are not responded to
+	 */
 	public NIODatagramAuthClient(InetSocketAddress serverAddress,
 										  TranslationScope translationScope, S objectRegistry,
 										  User entry, boolean useCompression, int timeout)
@@ -54,6 +84,17 @@ AuthClientRegistryObjects, AuthConstants, AuthMessages
 		this.entry = entry;
 	}
 	
+	/**
+	 * Authentication client constructor. Initializes new datagram client and 
+	 * starts the connection process. Specifies the authentication
+	 * entry through the entry parameter.
+	 * 
+	 * @param serverAddress
+	 * @param translationScope
+	 * @param objectRegistry application scope
+	 * @param useCompression whether or not to use compression
+	 * @param timeout timeout of messages that are not responded to
+	 */
 	public NIODatagramAuthClient(InetSocketAddress serverAddress,
 			  TranslationScope translationScope, S objectRegistry, boolean useCompression,
 			  int timeout)
@@ -61,12 +102,25 @@ AuthClientRegistryObjects, AuthConstants, AuthMessages
 		this(serverAddress, translationScope, objectRegistry, null, useCompression, timeout);
 	}
 	
+	/**
+	 * Authentication client constructor. Initializes new datagram client and 
+	 * starts the connection process. Specifies the authentication
+	 * entry through the entry parameter.
+	 * 
+	 * @param serverAddress
+	 * @param localAddress local address of the interface that you want to establish the client on
+	 * @param translationScope
+	 * @param objectRegistry application scope
+	 * @param useCompression whether or not to use compression
+	 * @param timeout timeout of messages that are not responded to
+	 */
 	public NIODatagramAuthClient(InetSocketAddress serverAddress,
 			InetSocketAddress localAddress, TranslationScope translationScope,
 			S objectRegistry, boolean useCompression, int timeout)
 	{
 		this(serverAddress, localAddress, translationScope, objectRegistry, null, useCompression, timeout);
 	}
+	
 	/**
 	 * @param entry
 	 *           The entry to set.
