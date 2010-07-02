@@ -19,7 +19,7 @@ import ecologylab.services.authentication.messages.AuthMessages;
 import ecologylab.services.authentication.nio.AuthClientSessionManager;
 import ecologylab.services.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.services.authentication.translationScope.AuthServerTranslations;
-import ecologylab.services.distributed.server.clientsessionmanager.AbstractClientSessionManager;
+import ecologylab.services.distributed.server.clientsessionmanager.BaseSessionManager;
 import ecologylab.services.exceptions.SaveFailedException;
 import ecologylab.services.logging.AuthLogging;
 import ecologylab.services.logging.AuthenticationOp;
@@ -81,7 +81,7 @@ public class DoubleThreadedAuthNIOServer<A extends User> extends
 	 * @return
 	 */
 	@Override
-	protected AbstractClientSessionManager generateContextManager(String sessionId, SelectionKey sk,
+	protected AuthClientSessionManager generateContextManager(String sessionId, SelectionKey sk,
 			TranslationScope translationSpace, Scope registry)
 	{
 		try
@@ -191,7 +191,7 @@ public class DoubleThreadedAuthNIOServer<A extends User> extends
 	 *      ecologylab.services.distributed.impl.NIOServerIOThread, java.nio.channels.SocketChannel)
 	 */
 	@Override
-	public boolean invalidate(Object sessionId, boolean forcePermanent)
+	public boolean invalidate(String sessionId, boolean forcePermanent)
 	{
 		boolean retVal = super.invalidate(sessionId, forcePermanent);
 

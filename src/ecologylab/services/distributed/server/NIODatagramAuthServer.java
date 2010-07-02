@@ -1,15 +1,19 @@
 package ecologylab.services.distributed.server;
 
+import java.net.SocketAddress;
+import java.nio.channels.SelectionKey;
 import java.util.LinkedList;
 import java.util.List;
 
 import ecologylab.collections.Scope;
 import ecologylab.services.authentication.Authenticatable;
 import ecologylab.services.authentication.AuthenticationList;
-import ecologylab.services.authentication.User;
 import ecologylab.services.authentication.OnlineAuthenticatorHashMapImpl;
+import ecologylab.services.authentication.User;
 import ecologylab.services.authentication.listener.AuthenticationListener;
 import ecologylab.services.authentication.messages.AuthMessages;
+import ecologylab.services.authentication.nio.AuthClientSessionManager;
+import ecologylab.services.authentication.nio.AuthDatagramClientSessionManager;
 import ecologylab.services.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.services.authentication.translationScope.AuthServerTranslations;
 import ecologylab.services.logging.AuthLogging;
@@ -19,10 +23,8 @@ import ecologylab.xml.ElementState;
 import ecologylab.xml.TranslationScope;
 import ecologylab.xml.XMLTranslationException;
 
-
-public class NIODatagramAuthServer<A extends User, S extends Scope> extends
-		NIODatagramServer<S> implements AuthServerRegistryObjects, AuthMessages, AuthLogging,
-		Authenticatable<A>
+public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIODatagramServer<S>
+		implements AuthServerRegistryObjects, AuthMessages, AuthLogging, Authenticatable<A>
 {
 
 	/**
@@ -81,6 +83,8 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends
 			S objectRegistry, AuthenticationList<A> authList, boolean useCompression)
 	{
 		super(portNumber, translationScope, objectRegistry, useCompression);
+
+		this.applicationObjectScope.put(MAIN_AUTHENTICATABLE, this);
 
 		authenticator = new OnlineAuthenticatorHashMapImpl<A>(authList);
 	}
@@ -185,5 +189,26 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends
 	{
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	/**
+	 * @see ecologylab.services.distributed.server.NIODatagramServer#generateContextManager(java.lang.String, java.nio.channels.SelectionKey, ecologylab.collections.Scope, java.net.SocketAddress)
+	 */
+	@Override
+	protected AuthDatagramClientSessionManager generateContextManager(String sessionId, SelectionKey sk,
+			Scope registryIn, SocketAddress address)
+	{
+		try
+		{
+			return new AuthDatagramClientSessionManager(sessionId, this, sk,
+					registryIn, this, authenticator, address);
+		}
+		catch (ClassCastException e)
+		{
+			debug("ATTEMPT TO USE AuthMessageProcessor WITH A NON-AUTHENTICATING SERVER!");
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

@@ -7,7 +7,7 @@ import ecologylab.collections.Scope;
 import ecologylab.services.authentication.Authenticatable;
 import ecologylab.services.authentication.User;
 import ecologylab.services.authentication.registryobjects.AuthServerRegistryObjects;
-import ecologylab.services.distributed.server.clientsessionmanager.AbstractClientSessionManager;
+import ecologylab.services.distributed.server.clientsessionmanager.BaseSessionManager;
 import ecologylab.services.messages.RequestMessage;
 import ecologylab.xml.xml_inherit;
 
@@ -75,7 +75,7 @@ public class Login extends RequestMessage implements AuthMessages, AuthServerReg
 
 		if (this.getSender() != null)
 		{
-			String sessionId = (String) localScope.get(AbstractClientSessionManager.SESSION_ID);
+			String sessionId = (String) localScope.get(BaseSessionManager.SESSION_ID);
 			loginSuccess = authenticatable.login(this.entry, sessionId);
 		}
 

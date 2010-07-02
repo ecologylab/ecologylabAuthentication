@@ -25,8 +25,6 @@ public class AuthenticationOp extends MixedInitiativeOp implements AuthMessages
 
 	@xml_attribute private String	ipAddress;
 
-	@xml_attribute private int		port;
-
 	public AuthenticationOp()
 	{
 		super();
@@ -49,7 +47,7 @@ public class AuthenticationOp extends MixedInitiativeOp implements AuthMessages
 	 *           the port on which the attempt to log in or out was made.
 	 */
 	public AuthenticationOp(String username, boolean loggingIn, String response,
-			String ipAddress, int port)
+			String ipAddress)
 	{
 		this.username = username;
 
@@ -65,8 +63,6 @@ public class AuthenticationOp extends MixedInitiativeOp implements AuthMessages
 		this.response = response;
 
 		this.ipAddress = ipAddress;
-
-		this.port = port;
 
 		this.currentTimeMillis = System.currentTimeMillis();
 	}
@@ -93,14 +89,6 @@ public class AuthenticationOp extends MixedInitiativeOp implements AuthMessages
 	public String getIpAddress()
 	{
 		return ipAddress;
-	}
-
-	/**
-	 * @return the port
-	 */
-	public int getPort()
-	{
-		return port;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package ecologylab.services.authentication.nio;
 
 import java.net.InetAddress;
+import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
@@ -11,16 +12,14 @@ import ecologylab.services.authentication.messages.AuthenticationRequest;
 import ecologylab.services.authentication.messages.Logout;
 import ecologylab.services.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.services.distributed.common.ServerConstants;
-import ecologylab.services.distributed.impl.NIOServerIOThread;
 import ecologylab.services.distributed.server.NIOServerProcessor;
-import ecologylab.services.distributed.server.clientsessionmanager.ClientSessionManager;
+import ecologylab.services.distributed.server.clientsessionmanager.DatagramClientSessionManager;
 import ecologylab.services.logging.AuthLogging;
 import ecologylab.services.logging.AuthenticationOp;
 import ecologylab.services.messages.BadSemanticContentResponse;
 import ecologylab.services.messages.ExplanationResponse;
 import ecologylab.services.messages.RequestMessage;
 import ecologylab.services.messages.ResponseMessage;
-import ecologylab.xml.TranslationScope;
 
 /**
  * Stores information about the connection context for the client, including authentication status.
@@ -31,8 +30,8 @@ import ecologylab.xml.TranslationScope;
  * @see ecologylab.services.distributed.server.clientsessionmanager.ClientSessionManager
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
-public class AuthClientSessionManager extends ClientSessionManager implements ServerConstants,
-		AuthServerRegistryObjects, AuthMessages
+public class AuthDatagramClientSessionManager extends DatagramClientSessionManager implements
+		ServerConstants, AuthServerRegistryObjects, AuthMessages
 {
 	private boolean							loggedIn				= false;
 
@@ -53,11 +52,11 @@ public class AuthClientSessionManager extends ClientSessionManager implements Se
 	 * @param servicesServer
 	 */
 	@SuppressWarnings("unchecked")
-	public AuthClientSessionManager(String token, int maxPacketSize, NIOServerIOThread server,
-			NIOServerProcessor frontend, SelectionKey sk, TranslationScope translationSpace,
-			Scope registry, AuthLogging servicesServer, OnlineAuthenticator authenticator)
+	public AuthDatagramClientSessionManager(String token, NIOServerProcessor frontend,
+			SelectionKey sk, Scope registry, AuthLogging servicesServer,
+			OnlineAuthenticator authenticator, SocketAddress address)
 	{
-		super(token, maxPacketSize, server, frontend, sk, translationSpace, registry);
+		super(token, frontend, sk, registry, address);
 
 		this.servicesServer = servicesServer;
 		this.authenticator = authenticator;
@@ -95,8 +94,7 @@ public class AuthClientSessionManager extends ClientSessionManager implements Se
 				// tell the server to log it
 				servicesServer.fireLoggingEvent(new AuthenticationOp(
 						((AuthenticationRequest) requestMessage).getEntry().getUserKey(), true,
-						((ExplanationResponse) response).getExplanation(),
-						address.toString()));
+						((ExplanationResponse) response).getExplanation(), address.toString()));
 			}
 			else
 			{ // otherwise we consider it bad!
@@ -113,7 +111,7 @@ public class AuthClientSessionManager extends ClientSessionManager implements Se
 				// tell the server to log it
 				servicesServer.fireLoggingEvent(new AuthenticationOp(((Logout) requestMessage).getEntry()
 						.getUserKey(), false, ((ExplanationResponse) response).getExplanation(),
-						((SocketChannel) socketKey.channel()).socket().getInetAddress().toString()));
+						address.toString()));
 			}
 		}
 
