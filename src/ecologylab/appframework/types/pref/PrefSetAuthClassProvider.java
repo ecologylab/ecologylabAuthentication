@@ -5,7 +5,7 @@ package ecologylab.appframework.types.pref;
 
 import ecologylab.appframework.types.prefs.Pref;
 import ecologylab.appframework.types.prefs.PrefSetBaseClassProvider;
-import ecologylab.xml.TranslationsClassProvider;
+import ecologylab.serialization.TranslationsClassProvider;
 
 /**
  * Provides an array of classes that can be used to translate a PrefSet in an authenticating

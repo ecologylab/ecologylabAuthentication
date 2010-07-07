@@ -5,10 +5,10 @@ package ecologylab.appframework.types.pref;
 
 import ecologylab.appframework.types.prefs.PrefsTranslationsProvider;
 import ecologylab.generic.Debug;
-import ecologylab.services.authentication.AuthenticationList;
-import ecologylab.services.authentication.AuthenticationListXMLImpl;
-import ecologylab.services.authentication.User;
-import ecologylab.xml.TranslationScope;
+import ecologylab.oodss.authentication.AuthenticationList;
+import ecologylab.oodss.authentication.AuthenticationListXMLImpl;
+import ecologylab.oodss.authentication.User;
+import ecologylab.serialization.TranslationScope;
 
 /**
  * Translations for the pref/meta_pref system.
