@@ -247,8 +247,8 @@ public class AuthListAdmin
 			}
 
 			System.out.println("Saving file: " + filename);
-
-			XMLTools.writePrettyXML(authList.translateToDOM(), xmlFile);
+			
+			authList.serialize(xmlFile);
 
 			System.out.println("Finished.");
 		}

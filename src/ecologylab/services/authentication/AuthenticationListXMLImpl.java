@@ -25,14 +25,14 @@ import ecologylab.xml.SaverState;
 public class AuthenticationListXMLImpl<U extends User> extends SaverState implements
 		AuthenticationList<U>
 {
-	@xml_map
-	@xml_scope(UserTranslationScope.NAME)
+	@simpl_map
+	@simpl_scope(UserTranslationScope.NAME)
 	private HashMap<String, U>	authList	= new HashMap<String, U>();
 
-	@xml_attribute
+	@simpl_scalar
 	private long								lastUID		= 0;
 
-	@xml_attribute
+	@simpl_scalar
 	private boolean							autoSave	= false;
 
 	/**

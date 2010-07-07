@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import biz.source_code.Base64Coder;
 
 import ecologylab.xml.ElementState;
-import ecologylab.xml.xml_inherit;
+import ecologylab.xml.simpl_inherit;
 import ecologylab.xml.ElementState.xml_other_tags;
 import ecologylab.xml.types.element.Mappable;
 
@@ -23,7 +23,7 @@ import ecologylab.xml.types.element.Mappable;
  * 
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
-public @xml_inherit
+public @simpl_inherit
 @xml_other_tags("authentication_list_entry")
 class User extends ElementState implements AuthLevels, Mappable<String>
 {
@@ -37,7 +37,7 @@ class User extends ElementState implements AuthLevels, Mappable<String>
 	 * Backwards compatibility for XML translate from is provided for "username", as this was the
 	 * historical name for this field.
 	 */
-	@xml_attribute
+	@simpl_scalar
 	@xml_other_tags("username")
 	private String	userKey		= "";
 
@@ -45,7 +45,7 @@ class User extends ElementState implements AuthLevels, Mappable<String>
 	 * Represents the password for this user key. It is automatically converted to a hash when added
 	 * via methods so it should never be modified through any other way!
 	 */
-	@xml_attribute
+	@simpl_scalar
 	private String	password	= "";
 
 	/**
@@ -54,14 +54,14 @@ class User extends ElementState implements AuthLevels, Mappable<String>
 	 * 0 = normal user (NORMAL_USER) (Others can be added here as necessary.) 10 = administrator
 	 * (ADMINISTRATOR)
 	 */
-	@xml_attribute
+	@simpl_scalar
 	private int			level			= NORMAL_USER;
 
 	/**
 	 * Unique identifier for the user. Created by the AuthenticationList when added. This attribute
 	 * should not be manually assigned.
 	 */
-	@xml_attribute
+	@simpl_scalar
 	private long		uid;
 
 	/**

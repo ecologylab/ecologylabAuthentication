@@ -7,7 +7,7 @@ import ecologylab.collections.Scope;
 import ecologylab.generic.BooleanSlot;
 import ecologylab.services.authentication.registryobjects.AuthClientRegistryObjects;
 import ecologylab.services.messages.ExplanationResponse;
-import ecologylab.xml.xml_inherit;
+import ecologylab.xml.simpl_inherit;
 
 /**
  * Indicates the response from the server regarding an attempt to log out.
@@ -15,7 +15,7 @@ import ecologylab.xml.xml_inherit;
  * @author Zachary O. Toups (zach@ecologylab.net)
  * 
  */
-@xml_inherit public class LogoutStatusResponse extends ExplanationResponse implements AuthMessages,
+@simpl_inherit public class LogoutStatusResponse extends ExplanationResponse implements AuthMessages,
 		AuthClientRegistryObjects
 {
 	/**

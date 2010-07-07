@@ -3,7 +3,7 @@
  */
 package ecologylab.services.authentication;
 
-import ecologylab.xml.xml_inherit;
+import ecologylab.xml.simpl_inherit;
 
 /**
  * Subclass of User that provides an email address as auxiliary information. Email address may be
@@ -11,14 +11,14 @@ import ecologylab.xml.xml_inherit;
  * 
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
-@xml_inherit
+@simpl_inherit
 public class UserWithEmail extends User
 {
 	/**
 	 * The email address for the user. Not used as a key, only provided as additional information.
 	 * Always stored in lowercase.
 	 */
-	@xml_attribute
+	@simpl_scalar
 	private String	email	= "";
 
 	/** No-argument constructor for serialization. */

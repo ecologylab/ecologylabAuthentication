@@ -17,13 +17,13 @@ public class AuthenticationOp extends MixedInitiativeOp implements AuthMessages
 	/** Logout action. */
 	public static final String		LOGOUT	= "logout";
 
-	@xml_attribute private String	username;
+	@simpl_scalar private String	username;
 
-	@xml_attribute private long	currentTimeMillis;
+	@simpl_scalar private long	currentTimeMillis;
 
-	@xml_attribute private String	response;
+	@simpl_scalar private String	response;
 
-	@xml_attribute private String	ipAddress;
+	@simpl_scalar private String	ipAddress;
 
 	public AuthenticationOp()
 	{

@@ -10,7 +10,7 @@ import ecologylab.services.authentication.registryobjects.AuthServerRegistryObje
 import ecologylab.services.distributed.server.clientsessionmanager.BaseSessionManager;
 import ecologylab.services.messages.DisconnectRequest;
 import ecologylab.services.messages.ResponseMessage;
-import ecologylab.xml.xml_inherit;
+import ecologylab.xml.simpl_inherit;
 
 /**
  * A Logout message indicates that the connnected client no longer wants to be
@@ -18,10 +18,10 @@ import ecologylab.xml.xml_inherit;
  * 
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
-@xml_inherit public class Logout extends DisconnectRequest implements
+@simpl_inherit public class Logout extends DisconnectRequest implements
 		AuthMessages, AuthServerRegistryObjects
 {
-	@xml_nested protected User	entry	= new User(
+	@simpl_composite protected User	entry	= new User(
 																					"", "");
 
 	/** Should not normally be used; only for XML translations. */

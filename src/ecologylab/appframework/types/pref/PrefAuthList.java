@@ -5,17 +5,17 @@ package ecologylab.appframework.types.pref;
 
 import ecologylab.appframework.types.prefs.Pref;
 import ecologylab.services.authentication.AuthenticationListXMLImpl;
-import ecologylab.xml.xml_inherit;
+import ecologylab.xml.simpl_inherit;
 
 /**
  * A preference that is an AuthenticationList.
  * 
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
-@xml_inherit
+@simpl_inherit
 public class PrefAuthList extends Pref<AuthenticationListXMLImpl>
 {
-	@xml_nested
+	@simpl_composite
 	AuthenticationListXMLImpl	value;
 
 	public PrefAuthList()

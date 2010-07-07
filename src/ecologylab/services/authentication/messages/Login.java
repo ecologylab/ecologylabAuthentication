@@ -9,7 +9,7 @@ import ecologylab.services.authentication.User;
 import ecologylab.services.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.services.distributed.server.clientsessionmanager.BaseSessionManager;
 import ecologylab.services.messages.RequestMessage;
-import ecologylab.xml.xml_inherit;
+import ecologylab.xml.simpl_inherit;
 
 /**
  * Used to log into a server that requires authentication; carries username and password information
@@ -17,10 +17,10 @@ import ecologylab.xml.xml_inherit;
  * 
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
-@xml_inherit
+@simpl_inherit
 public class Login extends RequestMessage implements AuthMessages, AuthServerRegistryObjects, AuthenticationRequest
 {
-	@xml_nested
+	@simpl_composite
 	protected User	entry;
 
 	/**
