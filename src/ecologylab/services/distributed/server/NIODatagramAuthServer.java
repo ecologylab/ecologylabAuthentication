@@ -21,7 +21,7 @@ import ecologylab.services.logging.AuthenticationOp;
 import ecologylab.services.logging.Logging;
 import ecologylab.xml.ElementState;
 import ecologylab.xml.TranslationScope;
-import ecologylab.xml.XMLTranslationException;
+import ecologylab.xml.SIMPLTranslationException;
 
 public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIODatagramServer<S>
 		implements AuthServerRegistryObjects, AuthMessages, AuthLogging, Authenticatable<A>
@@ -48,7 +48,7 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 					(AuthenticationList) ElementState.translateFromXML(authListFileName,
 							AuthServerTranslations.get()), useCompression);
 		}
-		catch (XMLTranslationException e)
+		catch (SIMPLTranslationException e)
 		{
 			e.printStackTrace();
 		}

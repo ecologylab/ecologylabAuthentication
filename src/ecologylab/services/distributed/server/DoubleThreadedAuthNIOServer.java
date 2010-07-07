@@ -52,7 +52,7 @@ public class DoubleThreadedAuthNIOServer<A extends User> extends
 	/**
 	 * @param portNumber
 	 * @param inetAddress
-	 * @param translationSpace
+	 * @param translationScope
 	 * @param objectRegistry
 	 * @throws IOException
 	 * @throws BindException
@@ -76,18 +76,18 @@ public class DoubleThreadedAuthNIOServer<A extends User> extends
 	/**
 	 * 
 	 * @param sessionId
-	 * @param translationSpace
+	 * @param translationScope
 	 * @param registry
 	 * @return
 	 */
 	@Override
 	protected AuthClientSessionManager generateContextManager(String sessionId, SelectionKey sk,
-			TranslationScope translationSpace, Scope registry)
+			TranslationScope translationScope, Scope registry)
 	{
 		try
 		{
 			return new AuthClientSessionManager(sessionId, maxMessageSize, getBackend(), this, sk,
-					translationSpace, registry, this, authenticator);
+					translationScope, registry, this, authenticator);
 		}
 		catch (ClassCastException e)
 		{

@@ -48,16 +48,16 @@ public class AuthClientSessionManager extends ClientSessionManager implements Se
 	 * @param server
 	 * @param frontend
 	 * @param socket
-	 * @param translationSpace
+	 * @param translationScope
 	 * @param registry
 	 * @param servicesServer
 	 */
 	@SuppressWarnings("unchecked")
 	public AuthClientSessionManager(String token, int maxPacketSize, NIOServerIOThread server,
-			NIOServerProcessor frontend, SelectionKey sk, TranslationScope translationSpace,
+			NIOServerProcessor frontend, SelectionKey sk, TranslationScope translationScope,
 			Scope registry, AuthLogging servicesServer, OnlineAuthenticator authenticator)
 	{
-		super(token, maxPacketSize, server, frontend, sk, translationSpace, registry);
+		super(token, maxPacketSize, server, frontend, sk, translationScope, registry);
 
 		this.servicesServer = servicesServer;
 		this.authenticator = authenticator;

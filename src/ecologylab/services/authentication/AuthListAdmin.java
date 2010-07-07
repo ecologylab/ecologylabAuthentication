@@ -12,7 +12,7 @@ import ecologylab.services.authentication.translationScope.AuthServerTranslation
 import ecologylab.services.exceptions.SaveFailedException;
 import ecologylab.xml.ElementState;
 import ecologylab.xml.XMLTools;
-import ecologylab.xml.XMLTranslationException;
+import ecologylab.xml.SIMPLTranslationException;
 
 /**
  * This program allows users to create and modify AuthenticationList files so that they do not have
@@ -26,10 +26,10 @@ public class AuthListAdmin
 	/**
 	 * @param args
 	 * @throws IOException
-	 * @throws XMLTranslationException
+	 * @throws SIMPLTranslationException
 	 */
 	public static void main(String[] args) throws IOException, SecurityException,
-			XMLTranslationException
+			SIMPLTranslationException
 	{
 		if (args.length < 1)
 		{
@@ -58,7 +58,7 @@ public class AuthListAdmin
 				authList = (AuthenticationListXMLImpl) ElementState.translateFromXML(
 						xmlFile, AuthServerTranslations.get());
 			}
-			catch (XMLTranslationException e)
+			catch (SIMPLTranslationException e)
 			{
 				System.err.println("There was an error translating the authentication list: " + filename);
 

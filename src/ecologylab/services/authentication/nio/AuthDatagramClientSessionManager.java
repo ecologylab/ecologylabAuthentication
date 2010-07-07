@@ -47,7 +47,7 @@ public class AuthDatagramClientSessionManager extends DatagramClientSessionManag
 	 * @param server
 	 * @param frontend
 	 * @param socket
-	 * @param translationSpace
+	 * @param translationScope
 	 * @param registry
 	 * @param servicesServer
 	 */
