@@ -15,7 +15,6 @@ import ecologylab.services.authentication.messages.AuthMessages;
 import ecologylab.services.authentication.nio.AuthClientSessionManager;
 import ecologylab.services.authentication.nio.AuthDatagramClientSessionManager;
 import ecologylab.services.authentication.registryobjects.AuthServerRegistryObjects;
-import ecologylab.services.authentication.translationScope.AuthServerTranslations;
 import ecologylab.services.logging.AuthLogging;
 import ecologylab.services.logging.AuthenticationOp;
 import ecologylab.services.logging.Logging;
@@ -44,8 +43,7 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 		try
 		{
 			server = new NIODatagramAuthServer(portNumber, translationScope, objectRegistry,
-					(AuthenticationList) TranslationScope.translateFromXML(authListFileName,
-							AuthServerTranslations.get()), useCompression);
+					(AuthenticationList) translationScope.deserialize(authListFileName), useCompression);
 		}
 		catch (SIMPLTranslationException e)
 		{

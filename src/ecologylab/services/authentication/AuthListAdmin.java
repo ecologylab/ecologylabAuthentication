@@ -55,8 +55,8 @@ public class AuthListAdmin
 		{
 			try
 			{
-				authList = (AuthenticationListXMLImpl) TranslationScope.translateFromXML(
-						xmlFile, AuthServerTranslations.get());
+				authList = (AuthenticationListXMLImpl) AuthServerTranslations.get().deserialize(
+						xmlFile);
 			}
 			catch (SIMPLTranslationException e)
 			{
