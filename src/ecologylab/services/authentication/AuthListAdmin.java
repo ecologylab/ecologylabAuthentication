@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 
 import ecologylab.services.authentication.translationScope.AuthServerTranslations;
 import ecologylab.services.exceptions.SaveFailedException;
-import ecologylab.xml.ElementState;
+import ecologylab.xml.TranslationScope;
 import ecologylab.xml.XMLTools;
 import ecologylab.xml.SIMPLTranslationException;
 
@@ -55,7 +55,7 @@ public class AuthListAdmin
 		{
 			try
 			{
-				authList = (AuthenticationListXMLImpl) ElementState.translateFromXML(
+				authList = (AuthenticationListXMLImpl) TranslationScope.translateFromXML(
 						xmlFile, AuthServerTranslations.get());
 			}
 			catch (SIMPLTranslationException e)
