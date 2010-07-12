@@ -1,6 +1,7 @@
 package ecologylab.oodss.authentication.nio;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -12,6 +13,7 @@ import ecologylab.oodss.authentication.messages.AuthenticationRequest;
 import ecologylab.oodss.authentication.messages.Logout;
 import ecologylab.oodss.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.oodss.distributed.common.ServerConstants;
+import ecologylab.oodss.distributed.server.NIODatagramAuthServer;
 import ecologylab.oodss.distributed.server.NIOServerProcessor;
 import ecologylab.oodss.distributed.server.clientsessionmanager.DatagramClientSessionManager;
 import ecologylab.oodss.logging.AuthLogging;
@@ -52,9 +54,9 @@ public class AuthDatagramClientSessionManager extends DatagramClientSessionManag
 	 * @param servicesServer
 	 */
 	@SuppressWarnings("unchecked")
-	public AuthDatagramClientSessionManager(String token, NIOServerProcessor frontend,
+	public AuthDatagramClientSessionManager(String token, NIODatagramAuthServer frontend,
 			SelectionKey sk, Scope registry, AuthLogging servicesServer,
-			OnlineAuthenticator authenticator, SocketAddress address)
+			OnlineAuthenticator authenticator, InetSocketAddress address)
 	{
 		super(token, frontend, sk, registry, address);
 

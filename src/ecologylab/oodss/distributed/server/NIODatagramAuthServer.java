@@ -1,5 +1,6 @@
 package ecologylab.oodss.distributed.server;
 
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.util.LinkedList;
@@ -194,7 +195,7 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 	 */
 	@Override
 	protected AuthDatagramClientSessionManager generateContextManager(String sessionId, SelectionKey sk,
-			Scope registryIn, SocketAddress address)
+			Scope registryIn, InetSocketAddress address)
 	{
 		try
 		{
