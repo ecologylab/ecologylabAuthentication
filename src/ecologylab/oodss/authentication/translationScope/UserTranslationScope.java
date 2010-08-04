@@ -15,7 +15,7 @@ public class UserTranslationScope
 
 	static final Class					TRANSLATIONS[]	=
 																							{ ecologylab.oodss.authentication.User.class,
-			ecologylab.oodss.authentication.UserWithEmail.class };
+			ecologylab.oodss.authentication.UserWithAuxData.class };
 
 	public static TranslationScope get()
 	{

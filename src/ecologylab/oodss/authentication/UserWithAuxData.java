@@ -12,17 +12,17 @@ import ecologylab.serialization.simpl_inherit;
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
 @simpl_inherit
-public class UserWithEmail extends User
+public class UserWithAuxData extends User
 {
 	/**
 	 * The email address for the user. Not used as a key, only provided as additional information.
 	 * Always stored in lowercase.
 	 */
 	@simpl_scalar
-	private String	email	= "";
+	private String	auxUserData	= "";
 
 	/** No-argument constructor for serialization. */
-	public UserWithEmail()
+	public UserWithAuxData()
 	{
 		super();
 	}
@@ -35,23 +35,11 @@ public class UserWithEmail extends User
 	 * @param plaintextPassword
 	 *          - the password; will be hashed before it is stored.
 	 */
-	public UserWithEmail(String userKey, String plaintextPassword, String email)
+	public UserWithAuxData(String userKey, String plaintextPassword, String auxUserData)
 	{
 		super(userKey, plaintextPassword);
-		
-		this.setEmail(email);
-	}
 
-	/**
-	 * Sets the email of the AuthenticationListEntry.
-	 * 
-	 * @param email
-	 *          - the email to set.
-	 */
-	public void setEmail(String email)
-	{
-		if (email != null)
-		this.email = email.toLowerCase();
+		this.setAuxUserData(auxUserData);
 	}
 
 	/**
@@ -60,14 +48,24 @@ public class UserWithEmail extends User
 	@Override
 	public String toString()
 	{
-		return super.toString() + " (" + email + ")";
+		return super.toString() + " (" + auxUserData + ")";
 	}
 
 	/**
-	 * @return the email
+	 * @return the auxUserData
 	 */
-	public String getEmail()
+	public String getAuxUserData()
 	{
-		return email;
+		return auxUserData;
+	}
+
+	/**
+	 * @param auxUserData
+	 *          the auxUserData to set
+	 */
+	public void setAuxUserData(String auxUserData)
+	{
+		if (auxUserData != null)
+			this.auxUserData = auxUserData;
 	}
 }

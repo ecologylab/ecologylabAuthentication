@@ -124,9 +124,9 @@ class User extends ElementState implements AuthLevels, Mappable<String>
 	 *          - the password to check.
 	 * @return true if the passwords are identical, false otherwise.
 	 */
-	public boolean compareHashedPassword(String hashedPassword)
+	public final boolean compareHashedPassword(String hashedPassword)
 	{
-		return password.equals(hashedPassword);
+		return this.password.trim().equals(hashedPassword.trim());
 	}
 
 	/**

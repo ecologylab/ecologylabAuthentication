@@ -87,7 +87,7 @@ public class OnlineAuthenticatorHashMapImpl<A extends User> extends Debug implem
 			}
 			else
 			{
-				debug("invalid entry");
+				debug("invalid user with session id");
 			}
 		}
 		else if (entry == null)

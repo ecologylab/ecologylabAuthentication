@@ -3,15 +3,16 @@
  */
 package ecologylab.oodss.authentication;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
-import ecologylab.generic.Debug;
 import ecologylab.oodss.authentication.db.AuthenticationDBStrings;
+import ecologylab.sql.ConnectionWithAutoClose;
+import ecologylab.sql.PreparedStatementWithAutoClose;
+import ecologylab.sql.StatementWithAutoClose;
 
 /**
  * Encapsulates all authentication actions (tracking who is online, etc.), so that Servers don't
@@ -21,8 +22,8 @@ import ecologylab.oodss.authentication.db.AuthenticationDBStrings;
  * 
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
-public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends AuthenticationListDBImpl<E>
-		implements OnlineAuthenticator<E>, AuthenticationDBStrings
+public class OnlineAuthenticatorDBImpl<UwAX extends UserWithAuxData> extends
+		AuthenticationListDBImpl<UwAX> implements OnlineAuthenticator<UwAX>, AuthenticationDBStrings
 {
 	/**
 	 * Creates a new OnlineAuthenticatorDBImpl based on a connection to a MySQL database. Lazily
@@ -48,7 +49,7 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	/**
 	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#login(A, java.lang.String)
 	 */
-	public boolean login(E entry, String sessionId)
+	public boolean login(UwAX entry, String sessionId)
 	{
 		System.out.println("*****************************************");
 		System.out.println("entry: " + entry.toString());
@@ -87,55 +88,9 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	}
 
 	/**
-	 * Alternate login call for email version. Boolean useUsername indicates whether the login should
-	 * use the user's username or email as the key to lookup in the database. Default is email.
-	 * 
-	 * @param entry
-	 * @param sessionId
-	 * @param useUsername
-	 * @return
-	 */
-	public boolean login(E entry, String sessionId, boolean useUsername)
-	{
-		System.out.println("*****************************************");
-		System.out.println("entry: " + entry.toString());
-
-		boolean loggedInSuccessfully = false;
-
-		// first see if the username exists
-		if (entry != null)
-		{
-			// check password
-			if (super.isValid(entry))
-			{
-				// regardless of whether the user is already online, update their information in the
-				// database.
-				// mark login successful
-				loggedInSuccessfully = true;
-
-				this.performLoginOrLogoutOnDB(entry.getUserKey(), sessionId, true);
-
-				// set the UID from the backing store
-				this.setUID(entry);
-			}
-			else
-			{
-				debug("invalid entry");
-			}
-		}
-		else
-		{
-			debug("<null> attempted login.");
-			loggedInSuccessfully = false;
-		}
-
-		return loggedInSuccessfully;
-	}
-
-	/**
 	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#lookupUserLevel(A)
 	 */
-	public int lookupUserLevel(E entry)
+	public int lookupUserLevel(UwAX entry)
 	{
 		if (super.isValid(entry))
 		{
@@ -152,7 +107,7 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	 * 
 	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#usersLoggedIn(A)
 	 */
-	public Set<String> usersLoggedIn(E administrator)
+	public Set<String> usersLoggedIn(UwAX administrator)
 	{
 		if (this.lookupUserLevel(administrator) >= AuthLevels.ADMINISTRATOR)
 		{
@@ -167,7 +122,7 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	/**
 	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#logout(A, java.lang.String)
 	 */
-	public boolean logout(E entry, String sessionId)
+	public boolean logout(UwAX entry, String sessionId)
 	{
 		return this.logout(entry, sessionId, false);
 	}
@@ -175,11 +130,11 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	/**
 	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#logout(A, java.lang.String)
 	 */
-	public boolean logout(E entry, String sessionId, boolean useUsername)
+	public boolean logout(UwAX entry, String sessionId, boolean useUsername)
 	{
 		try
 		{
-			if (entry.getEmail().equals(this.performLookupUserKeyInDB(sessionId)))
+			if (entry.getUid() == this.performLookupUserId(sessionId))
 			{
 				this.performLoginOrLogoutOnDB(entry.getUserKey(), sessionId, false);
 				entry.setSessionId(null);
@@ -208,17 +163,17 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	/**
 	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#getSessionId(ecologylab.oodss.authentication.AuthenticationListEntry)
 	 */
-	public String getSessionId(E entry)
+	public String getSessionId(UwAX entry)
 	{
-		return performLookupSessionIdDB(entry.getEmail());
+		return performLookupSessionIdDB(entry.getUserKey());
 	}
 
 	/**
 	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#isLoggedIn(ecologylab.oodss.authentication.AuthenticationListEntry)
 	 */
-	public boolean isLoggedIn(E entry)
+	public boolean isLoggedIn(UwAX entry)
 	{
-		return performIsOnlineDB(entry.getEmail());
+		return performIsOnlineDB(entry.getUserKey());
 	}
 
 	/**
@@ -234,7 +189,7 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	 */
 	public boolean sessionValid(String sessionId)
 	{
-		return this.performLookupUserKeyInDB(sessionId) != null;
+		return this.performLookupUserId(sessionId) != -1;
 	}
 
 	/**
@@ -243,29 +198,20 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	 */
 	private boolean performIsOnlineDB(String userKey)
 	{
-		String selectUser = SELECT_USER_BY_USER_KEY_PREFIX + userKey + STATEMENT_END_STRING;
-
-		Statement stmt = null;
-		ResultSet rs = null;
 		boolean isOnline = false;
 
-		Connection connection = null;
+		ConnectionWithAutoClose connection = null;
+		PreparedStatementWithAutoClose stmt = null;
+		ResultSet rs = null;
 
 		try
 		{
-			connection = connection();
-		}
-		catch (SQLException e1)
-		{
-			e1.printStackTrace();
+			connection = this.getAutoClosingConnection();
 
-			return false;
-		}
+			stmt = connection.prepareStatement(PREPARED_SELECT_USER_BY_USER_KEY);
+			stmt.setString(1, userKey);
 
-		try
-		{
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(selectUser);
+			rs = stmt.executeQuery();
 
 			if (rs.next())
 				isOnline = rs.getBoolean(COL_ONLINE);
@@ -276,61 +222,31 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 		}
 		finally
 		{
-			if (stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch (SQLException e)
-				{
-
-				}
-
-				stmt = null;
-			}
-
-			try
-			{
+			if (connection != null)
 				connection.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 
 		return isOnline;
 	}
 
-	private synchronized Set<String> performLookupOnlineUsersInDB()
+	protected synchronized Set<String> performLookupOnlineUsersInDB()
 	{
-		Statement stmt = null;
-		ResultSet rs = null;
-
 		Set<String> onlineUsers = new HashSet<String>();
 
-		Connection connection = null;
+		ConnectionWithAutoClose connection = null;
+		StatementWithAutoClose<Statement> stmt = null;
+		ResultSet rs = null;
 
 		try
 		{
-			connection = connection();
-		}
-		catch (SQLException e1)
-		{
-			e1.printStackTrace();
+			connection = this.getAutoClosingConnection();
 
-			return null;
-		}
-
-		try
-		{
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(SELECT_ALL_ONLINE_USERS);
 
 			while (rs.next())
 			{
-				onlineUsers.add(rs.getString(COL_EMAIL));
+				onlineUsers.add(rs.getString(COL_USER_KEY));
 			}
 		}
 		catch (SQLException e)
@@ -339,28 +255,8 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 		}
 		finally
 		{
-			if (stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch (SQLException e)
-				{
-
-				}
-
-				stmt = null;
-			}
-
-			try
-			{
+			if (connection != null)
 				connection.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 
 		return onlineUsers;
@@ -373,32 +269,26 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	 */
 	private void performLoginOrLogoutOnDB(String key, String sessionId, boolean login)
 	{
-		String updateUser = (login ? (LOGIN_USER_PREFIX + sessionId + LOGIN_USER_BY_USER_KEY_WHERE_CLAUSE)
-				: LOGOUT_USER_BY_USER_KEY_PREFIX)
-				+ key
-				+ STATEMENT_END_STRING;
-
-		debug("update user command: " + updateUser);
-
-		Statement stmt = null;
-
-		Connection connection = null;
+		ConnectionWithAutoClose connection = null;
+		PreparedStatementWithAutoClose stmt = null;
 
 		try
 		{
-			connection = connection();
-		}
-		catch (SQLException e1)
-		{
-			e1.printStackTrace();
+			connection = this.getAutoClosingConnection();
 
-			return;
-		}
+			if (login)
+			{
+				stmt = connection.prepareStatement(PREPARED_LOGIN_USER);
+				stmt.setString(1, sessionId);
+				stmt.setString(2, key);
+			}
+			else
+			{
+				stmt = connection.prepareStatement(PREPARED_LOGOUT_USER_BY_USER_KEY);
+				stmt.setString(2, key);
+			}
 
-		try
-		{
-			stmt = connection.createStatement();
-			stmt.execute(updateUser);
+			stmt.executeUpdate();
 		}
 		catch (SQLException e)
 		{
@@ -406,28 +296,8 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 		}
 		finally
 		{
-			if (stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
-
-				stmt = null;
-			}
-
-			try
-			{
+			if (connection != null)
 				connection.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -436,28 +306,16 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	 */
 	private void performLogoutOnDB(String sessionId)
 	{
-		String updateUser = LOGOUT_USER_BY_SESSION_ID_PREFIX + sessionId + STATEMENT_END_STRING;
-		Debug.println("sql: "+updateUser);
-
-		Statement stmt = null;
-
-		Connection connection = null;
+		ConnectionWithAutoClose connection = null;
+		PreparedStatementWithAutoClose stmt = null;
 
 		try
 		{
-			connection = connection();
-		}
-		catch (SQLException e1)
-		{
-			e1.printStackTrace();
+			connection = this.getAutoClosingConnection();
 
-			return;
-		}
-
-		try
-		{
-			stmt = connection.createStatement();
-			stmt.execute(updateUser);
+			stmt = connection.prepareStatement(PREPARED_LOGOUT_USER_BY_SESSION_ID);
+			stmt.setString(1, sessionId);
+			stmt.executeUpdate();
 		}
 		catch (SQLException e)
 		{
@@ -465,28 +323,8 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 		}
 		finally
 		{
-			if (stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch (SQLException e)
-				{
-
-				}
-
-				stmt = null;
-			}
-
-			try
-			{
+			if (connection != null)
 				connection.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -497,28 +335,19 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 	 */
 	private synchronized String performLookupSessionIdDB(String userKey)
 	{
-		Statement stmt = null;
-		ResultSet rs = null;
-
 		String sessionId = null;
 
-		Connection connection = null;
+		ConnectionWithAutoClose connection = null;
+		PreparedStatementWithAutoClose stmt = null;
+		ResultSet rs = null;
 
 		try
 		{
-			connection = connection();
-		}
-		catch (SQLException e1)
-		{
-			e1.printStackTrace();
+			connection = this.getAutoClosingConnection();
 
-			return null;
-		}
-
-		try
-		{
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(SELECT_USER_BY_USER_KEY_PREFIX + userKey + STATEMENT_END_STRING);
+			stmt = connection.prepareStatement(PREPARED_SELECT_USER_BY_USER_KEY);
+			stmt.setString(1, userKey);
+			rs = stmt.executeQuery();
 
 			if (rs.next())
 				sessionId = rs.getString(COL_SESSION_ID);
@@ -529,63 +358,38 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 		}
 		finally
 		{
-			if (stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
-
-				stmt = null;
-			}
-
-			try
-			{
+			if (connection != null)
 				connection.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 
 		return sessionId;
 	}
 
 	/**
-	 * @param email
+	 * Looks up a unique user identifier from the given session identifier.
+	 * 
+	 * @param sessionId
+	 * @return -1 if the session was not in the database; user id otherwise
 	 */
-	private synchronized String performLookupUserKeyInDB(String sessionId)
+	private synchronized long performLookupUserId(String sessionId)
 	{
-		Statement stmt = null;
+		long uid = -1;
+
+		ConnectionWithAutoClose connection = null;
+		PreparedStatementWithAutoClose selectUser = null;
 		ResultSet rs = null;
 
-		String email = null;
-
-		Connection connection = null;
-
 		try
 		{
-			connection = connection();
-		}
-		catch (SQLException e1)
-		{
-			e1.printStackTrace();
+			connection = this.getAutoClosingConnection();
 
-			return null;
-		}
+			selectUser = connection.prepareStatement(PREPARED_SELECT_USER_BY_SESSION_ID);
+			selectUser.setString(1, sessionId);
 
-		try
-		{
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(SELECT_USER_BY_SESSION_ID_PREFIX + sessionId + STATEMENT_END_STRING);
+			rs = selectUser.executeQuery();
 
 			if (rs.next())
-				email = rs.getString(COL_USER_KEY);
+				uid = rs.getLong(COL_UID);
 		}
 		catch (SQLException e)
 		{
@@ -593,31 +397,11 @@ public class OnlineAuthenticatorDBImpl<E extends UserWithEmail> extends Authenti
 		}
 		finally
 		{
-			if (stmt != null)
-			{
-				try
-				{
-					stmt.close();
-				}
-				catch (SQLException e)
-				{
-
-				}
-
-				stmt = null;
-			}
-
-			try
-			{
+			if (connection != null)
 				connection.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 
-		return email;
+		return uid;
 	}
 
 	/**
