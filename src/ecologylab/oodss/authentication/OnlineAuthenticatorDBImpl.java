@@ -389,7 +389,7 @@ public class OnlineAuthenticatorDBImpl<UwAX extends UserWithAuxData> extends
 			rs = selectUser.executeQuery();
 
 			if (rs.next())
-				uid = rs.getLong(COL_UID);
+				uid = rs.getLong(DB_COL_USER_ID);
 		}
 		catch (SQLException e)
 		{

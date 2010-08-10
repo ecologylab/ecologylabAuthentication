@@ -213,7 +213,7 @@ public class AuthenticationListDBImpl<U extends User> extends Debug implements
 				foundUser = new UserWithAuxData(rs.getString(COL_USER_KEY), null, rs
 						.getString(COL_AUX_USER_DATA));
 				foundUser.setLevel(rs.getInt(COL_LEVEL));
-				foundUser.setUid(rs.getLong(COL_UID));
+				foundUser.setUid(rs.getLong(DB_COL_USER_ID));
 			}
 		}
 		catch (SQLException e)
@@ -279,13 +279,6 @@ public class AuthenticationListDBImpl<U extends User> extends Debug implements
 	{
 		UserWithAuxData foundUser = this.retrieveUserFromDB(entry.getUserKey());
 
-		if (foundUser == null)
-			debug("failed to find user in DB");
-		if (entry.getPassword() == null)
-			debug("user supplied no password");
-		if (!entry.compareHashedPassword(this.retrievePassword(entry.getUserKey())))
-			debug("wrong password");
-
 		return ((foundUser != null) && (entry.getPassword() != null) && entry
 				.compareHashedPassword(this.retrievePassword(entry.getUserKey())));
 	}
@@ -312,9 +305,10 @@ public class AuthenticationListDBImpl<U extends User> extends Debug implements
 			selectUserStmt.setString(1, userKey);
 
 			rs = selectUserStmt.executeQuery();
-			rs.next();
-
-			password = rs.getString(COL_PASSWORD);
+			if (rs.next())
+				password = rs.getString(COL_PASSWORD);
+			else
+				password = null;
 		}
 		catch (SQLException e1)
 		{

@@ -24,7 +24,7 @@ public interface AuthenticationDBStrings
 
 	static final String	DB_TABLE_USER													= "study_user";
 
-	static final String	COL_UID																= "user_id";
+	static final String	DB_COL_USER_ID												= "user_id";
 
 	static final String	COL_USER_KEY													= "user_key";
 
@@ -90,7 +90,7 @@ public interface AuthenticationDBStrings
 																																+ COL_USER_KEY
 																																+ " = ?;";
 
-	static final String	PREPARED_LOGOUT_USER_BY_USER_KEY				= "UPDATE "
+	static final String	PREPARED_LOGOUT_USER_BY_USER_KEY			= "UPDATE "
 																																+ DB_TABLE_USER
 																																+ " SET "
 																																+ COL_ONLINE
