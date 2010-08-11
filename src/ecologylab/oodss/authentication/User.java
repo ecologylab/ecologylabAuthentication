@@ -25,7 +25,7 @@ import ecologylab.serialization.types.element.Mappable;
  */
 public @simpl_inherit
 @xml_other_tags("authentication_list_entry")
-class User extends ElementState implements AuthLevels, Mappable<String>
+class User extends ElementState implements AuthLevels, Mappable<String>, Comparable<User>
 {
 	/**
 	 * The user's key in the backing store. This key must be provided, along with the password, to
@@ -157,16 +157,16 @@ class User extends ElementState implements AuthLevels, Mappable<String>
 			{
 				MessageDigest encrypter = MessageDigest.getInstance("SHA-256");
 
-				try 
+				try
 				{
-	        encrypter.update(plaintextPassword.getBytes("UTF8"));
-        } 
-				catch (UnsupportedEncodingException e) 
+					encrypter.update(plaintextPassword.getBytes("UTF8"));
+				}
+				catch (UnsupportedEncodingException e)
 				{
-	        System.err.println("Unsupported Enconding: UTF8: this should " +
-	        										"never happen all JVM's required to implement UTF8");
-	        e.printStackTrace();
-        }
+					System.err.println("Unsupported Enconding: UTF8: this should "
+							+ "never happen all JVM's required to implement UTF8");
+					e.printStackTrace();
+				}
 
 				// convert to normal characters and return as a String
 				return new String(Base64Coder.encode(encrypter.digest()));
@@ -181,7 +181,7 @@ class User extends ElementState implements AuthLevels, Mappable<String>
 			// this should never occur
 			return plaintextPassword;
 		}
-		
+
 		return null;
 	}
 
@@ -273,5 +273,16 @@ class User extends ElementState implements AuthLevels, Mappable<String>
 	public void setSessionId(String sessionId)
 	{
 		this.sessionId = sessionId;
+	}
+
+	/**
+	 * Orders by user key.
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(User o)
+	{
+		return this.userKey.compareTo(o.userKey);
 	}
 }
