@@ -33,16 +33,6 @@ public interface OnlineAuthenticator<U extends User> extends
 	public boolean login(U entry, String sessionId);
 
 	/**
-	 * Looks up the authentication level, if any, of entry. Returns -1 if entry is not Authenticatable
-	 * on this.
-	 * 
-	 * @param entry
-	 *          - an instance of a subclass of AuthenticationListEntry with a username and password.
-	 * @return
-	 */
-	public int lookupUserLevel(U entry);
-
-	/**
 	 * Looks up a list of logged-in users for an administrator.
 	 * 
 	 * @param administrator

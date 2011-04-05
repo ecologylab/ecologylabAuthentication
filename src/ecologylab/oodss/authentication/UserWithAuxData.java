@@ -21,6 +21,8 @@ public class UserWithAuxData extends User
 	@simpl_scalar
 	private String	auxUserData	= "";
 
+	private int			teamSpec		= -1;
+
 	/** No-argument constructor for serialization. */
 	public UserWithAuxData()
 	{
@@ -67,5 +69,21 @@ public class UserWithAuxData extends User
 	{
 		if (auxUserData != null)
 			this.auxUserData = auxUserData;
+	}
+
+	/**
+	 * @return the teamSpec
+	 */
+	public int getTeamSpec()
+	{
+		return teamSpec;
+	}
+
+	/**
+	 * @param teamSpec the teamSpec to set
+	 */
+	public void setTeamSpec(int teamSpec)
+	{
+		this.teamSpec = teamSpec;
 	}
 }

@@ -174,4 +174,10 @@ public class AuthenticationListXMLImpl<U extends User> extends SaverState implem
 	{
 		entry.setUid(this.authList.get(entry.getUserKey()).getUid());
 	}
+
+	@Override
+	public int getAccessLevel(String userKey)
+	{
+		return authList.get(userKey).getLevel();
+	}
 }

@@ -41,6 +41,14 @@ public interface AuthenticationList<U extends User>
 	public int getAccessLevel(U user);
 
 	/**
+	 * Retrieves the access level for the given entry's user key.
+	 * 
+	 * @param userKey
+	 * @return
+	 */
+	public int getAccessLevel(String userKey);
+
+	/**
 	 * Checks entry against the entries contained in this. Verifies that the username exists, and the
 	 * password matches; returns true if both are true.
 	 * 

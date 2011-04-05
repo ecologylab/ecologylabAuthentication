@@ -260,7 +260,18 @@ public class AuthenticationListDBImpl<U extends User> extends Debug implements
 	 */
 	public synchronized int getAccessLevel(U entry)
 	{
-		UserWithAuxData foundUser = this.retrieveUserFromDB(entry.getUserKey());
+		return this.getAccessLevel(entry.getUserKey());
+	}
+	
+	/**
+	 * Retrieves the access level for the given entry.
+	 * 
+	 * @param entry
+	 * @return
+	 */
+	public synchronized int getAccessLevel(String userKey)
+	{
+		UserWithAuxData foundUser = this.retrieveUserFromDB(userKey);
 
 		if (foundUser != null)
 			return foundUser.getLevel();

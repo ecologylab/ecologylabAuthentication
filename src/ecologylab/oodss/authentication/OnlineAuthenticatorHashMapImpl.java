@@ -104,9 +104,9 @@ public class OnlineAuthenticatorHashMapImpl<A extends User> extends Debug implem
 	}
 
 	/**
-	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#lookupUserLevel(A)
+	 * @see ecologylab.oodss.authentication.AuthenticationList#getAccessLevel(ecologylab.oodss.authentication.User)
 	 */
-	public int lookupUserLevel(A entry)
+	public int getAccessLevel(A entry)
 	{
 		if (authList.isValid(entry))
 		{
@@ -118,12 +118,18 @@ public class OnlineAuthenticatorHashMapImpl<A extends User> extends Debug implem
 		}
 	}
 
+	@Override
+	public int getAccessLevel(String userKey)
+	{
+		return authList.getAccessLevel(userKey);
+	}
+	
 	/**
 	 * @see ecologylab.oodss.authentication.OnlineAuthenticator#usersLoggedIn(A)
 	 */
 	public Set<String> usersLoggedIn(A administrator)
 	{
-		if (this.lookupUserLevel(administrator) >= AuthLevels.ADMINISTRATOR)
+		if (this.getAccessLevel(administrator) >= AuthLevels.ADMINISTRATOR)
 		{
 			return this.usersLoggedIn();
 		}
@@ -232,14 +238,6 @@ public class OnlineAuthenticatorHashMapImpl<A extends User> extends Debug implem
 	public boolean contains(A entry)
 	{
 		return this.authList.contains(entry);
-	}
-
-	/**
-	 * @see ecologylab.oodss.authentication.AuthenticationList#getAccessLevel(ecologylab.oodss.authentication.User)
-	 */
-	public int getAccessLevel(A entry)
-	{
-		return this.authList.getAccessLevel(entry);
 	}
 
 	/**
