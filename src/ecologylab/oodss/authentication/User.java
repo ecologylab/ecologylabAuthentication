@@ -6,12 +6,12 @@ package ecologylab.oodss.authentication;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
 
 import biz.source_code.Base64Coder;
-
 import ecologylab.serialization.ElementState;
-import ecologylab.serialization.simpl_inherit;
 import ecologylab.serialization.ElementState.xml_other_tags;
+import ecologylab.serialization.simpl_inherit;
 import ecologylab.serialization.types.element.Mappable;
 
 /**
@@ -140,6 +140,15 @@ class User extends ElementState implements AuthLevels, Mappable<String>, Compara
 	public boolean comparePassword(String plaintextPassword)
 	{
 		return this.password.equals(hashPassword(plaintextPassword));
+	}
+	
+	public static void main(String[] args)
+	{
+		Scanner s = new Scanner(System.in);
+		
+		String input = s.nextLine();
+
+		System.out.println(User.hashPassword(input));
 	}
 
 	/**
