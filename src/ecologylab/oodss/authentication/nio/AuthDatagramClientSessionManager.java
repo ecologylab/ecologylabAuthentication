@@ -32,8 +32,9 @@ import ecologylab.oodss.messages.ResponseMessage;
  * @see ecologylab.oodss.distributed.server.clientsessionmanager.ClientSessionManager
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
-public class AuthDatagramClientSessionManager extends DatagramClientSessionManager implements
-		ServerConstants, AuthServerRegistryObjects, AuthMessages
+public class AuthDatagramClientSessionManager<S extends Scope, PARENT extends Scope> extends
+		DatagramClientSessionManager<S, PARENT> implements ServerConstants, AuthServerRegistryObjects,
+		AuthMessages
 {
 	private boolean							loggedIn				= false;
 
@@ -50,15 +51,18 @@ public class AuthDatagramClientSessionManager extends DatagramClientSessionManag
 	 * @param frontend
 	 * @param socket
 	 * @param translationScope
-	 * @param registry
+	 * @param appObjScope
 	 * @param servicesServer
 	 */
-	@SuppressWarnings("unchecked")
-	public AuthDatagramClientSessionManager(String token, NIODatagramAuthServer frontend,
-			SelectionKey sk, Scope registry, AuthLogging servicesServer,
-			OnlineAuthenticator authenticator, InetSocketAddress address)
+	public AuthDatagramClientSessionManager(String token,
+																					NIODatagramAuthServer frontend,
+																					SelectionKey sk,
+																					PARENT appObjScope,
+																					AuthLogging servicesServer,
+																					OnlineAuthenticator authenticator,
+																					InetSocketAddress address)
 	{
-		super(token, frontend, sk, registry, address);
+		super(token, frontend, sk, appObjScope, address);
 
 		this.servicesServer = servicesServer;
 		this.authenticator = authenticator;
@@ -94,9 +98,11 @@ public class AuthDatagramClientSessionManager extends DatagramClientSessionManag
 				}
 
 				// tell the server to log it
-				servicesServer.fireLoggingEvent(new AuthenticationOp(
-						((AuthenticationRequest) requestMessage).getEntry().getUserKey(), true,
-						((ExplanationResponse) response).getExplanation(), address.toString()));
+				servicesServer.fireLoggingEvent(new AuthenticationOp(	((AuthenticationRequest) requestMessage).getEntry()
+																																																			.getUserKey(),
+																															true,
+																															((ExplanationResponse) response).getExplanation(),
+																															address.toString()));
 			}
 			else
 			{ // otherwise we consider it bad!
@@ -111,9 +117,11 @@ public class AuthDatagramClientSessionManager extends DatagramClientSessionManag
 			if (requestMessage instanceof Logout)
 			{
 				// tell the server to log it
-				servicesServer.fireLoggingEvent(new AuthenticationOp(((Logout) requestMessage).getEntry()
-						.getUserKey(), false, ((ExplanationResponse) response).getExplanation(),
-						address.toString()));
+				servicesServer.fireLoggingEvent(new AuthenticationOp(	((Logout) requestMessage).getEntry()
+																																												.getUserKey(),
+																															false,
+																															((ExplanationResponse) response).getExplanation(),
+																															address.toString()));
 			}
 		}
 

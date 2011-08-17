@@ -1,7 +1,6 @@
 package ecologylab.oodss.distributed.server;
 
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,10 +12,8 @@ import ecologylab.oodss.authentication.OnlineAuthenticatorHashMapImpl;
 import ecologylab.oodss.authentication.User;
 import ecologylab.oodss.authentication.listener.AuthenticationListener;
 import ecologylab.oodss.authentication.messages.AuthMessages;
-import ecologylab.oodss.authentication.nio.AuthClientSessionManager;
 import ecologylab.oodss.authentication.nio.AuthDatagramClientSessionManager;
 import ecologylab.oodss.authentication.registryobjects.AuthServerRegistryObjects;
-import ecologylab.oodss.distributed.server.NIODatagramServer;
 import ecologylab.oodss.logging.AuthLogging;
 import ecologylab.oodss.logging.AuthenticationOp;
 import ecologylab.oodss.logging.Logging;
@@ -44,8 +41,11 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 
 		try
 		{
-			server = new NIODatagramAuthServer(portNumber, translationScope, objectRegistry,
-					(AuthenticationList) translationScope.deserialize(authListFileName), useCompression);
+			server = new NIODatagramAuthServer(	portNumber,
+																					translationScope,
+																					objectRegistry,
+																					(AuthenticationList) translationScope.deserialize(authListFileName),
+																					useCompression);
 		}
 		catch (SIMPLTranslationException e)
 		{
@@ -67,8 +67,11 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 	{
 		NIODatagramAuthServer server = null;
 
-		server = new NIODatagramAuthServer(portNumber, translationScope, objectRegistry, authList,
-				useCompression);
+		server = new NIODatagramAuthServer(	portNumber,
+																				translationScope,
+																				objectRegistry,
+																				authList,
+																				useCompression);
 		return server;
 	}
 
@@ -78,12 +81,16 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 		return getInstance(portNumber, translationScope, objectRegistry, authList, false);
 	}
 
-	protected NIODatagramAuthServer(int portNumber, TranslationScope translationScope,
-			S objectRegistry, AuthenticationList<A> authList, boolean useCompression)
+	protected NIODatagramAuthServer(int portNumber,
+																	TranslationScope translationScope,
+																	S objectRegistry,
+																	AuthenticationList<A> authList,
+																	boolean useCompression)
 	{
 		super(portNumber, translationScope, objectRegistry, useCompression);
 
-		this.applicationObjectScope.put(MAIN_AUTHENTICATABLE, this);
+		// this.applicationObjectScope.put(MAIN_AUTHENTICATABLE, this);
+		this.objectRegistry.put(MAIN_AUTHENTICATABLE, this);
 
 		authenticator = new OnlineAuthenticatorHashMapImpl<A>(authList);
 	}
@@ -191,16 +198,22 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 	}
 
 	/**
-	 * @see ecologylab.oodss.distributed.server.NIODatagramServer#generateContextManager(java.lang.String, java.nio.channels.SelectionKey, ecologylab.collections.Scope, java.net.SocketAddress)
+	 * @see ecologylab.oodss.distributed.server.NIODatagramServer#generateContextManager(java.lang.String,
+	 *      java.nio.channels.SelectionKey, ecologylab.collections.Scope, java.net.SocketAddress)
 	 */
 	@Override
-	protected AuthDatagramClientSessionManager generateContextManager(String sessionId, SelectionKey sk,
-			Scope registryIn, InetSocketAddress address)
+	protected AuthDatagramClientSessionManager generateContextManager(String sessionId,
+			SelectionKey sk, S registryIn, InetSocketAddress address)
 	{
 		try
 		{
-			return new AuthDatagramClientSessionManager(sessionId, this, sk,
-					registryIn, this, authenticator, address);
+			return new AuthDatagramClientSessionManager(sessionId,
+																									this,
+																									sk,
+																									registryIn,
+																									this,
+																									authenticator,
+																									address);
 		}
 		catch (ClassCastException e)
 		{

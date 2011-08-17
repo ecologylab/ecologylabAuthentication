@@ -19,8 +19,6 @@ import ecologylab.oodss.authentication.messages.AuthMessages;
 import ecologylab.oodss.authentication.nio.AuthClientSessionManager;
 import ecologylab.oodss.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.oodss.authentication.translationScope.AuthServerTranslations;
-import ecologylab.oodss.distributed.server.DoubleThreadedNIOServer;
-import ecologylab.oodss.distributed.server.clientsessionmanager.BaseSessionManager;
 import ecologylab.oodss.exceptions.SaveFailedException;
 import ecologylab.oodss.logging.AuthLogging;
 import ecologylab.oodss.logging.AuthenticationOp;
