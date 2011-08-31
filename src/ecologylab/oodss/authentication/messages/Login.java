@@ -18,7 +18,7 @@ import ecologylab.serialization.simpl_inherit;
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
 @simpl_inherit
-public class Login extends RequestMessage implements AuthMessages, AuthServerRegistryObjects, AuthenticationRequest
+public class Login<S extends Scope> extends RequestMessage<S> implements AuthMessages, AuthServerRegistryObjects, AuthenticationRequest
 {
 	@simpl_composite
 	protected User	entry;
@@ -64,7 +64,7 @@ public class Login extends RequestMessage implements AuthMessages, AuthServerReg
 	 * @return A ResponseMessage indicating whether or not the username/password were accepted.
 	 */
 	@Override
-	public LoginStatusResponse performService(Scope localScope)
+	public LoginStatusResponse performService(S localScope)
 	{
 		Authenticatable authenticatable = (Authenticatable) localScope.get(MAIN_AUTHENTICATABLE);
 

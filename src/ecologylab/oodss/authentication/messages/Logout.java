@@ -47,7 +47,7 @@ public class Logout<SCOPE extends Scope> extends DisconnectRequest<SCOPE> implem
 	 * not, sends a failure response.
 	 */
 	@Override
-	public LogoutStatusResponse performService(Scope localScope)
+	public LogoutStatusResponse performService(SCOPE localScope)
 	{
 		debug("*************************** LOGOUT " + this.entry.getUserKey());
 		Authenticatable server = (Authenticatable) localScope.get(MAIN_AUTHENTICATABLE);
@@ -58,11 +58,9 @@ public class Logout<SCOPE extends Scope> extends DisconnectRequest<SCOPE> implem
 			super.performService(localScope);
 			return new LogoutStatusResponse(LOGOUT_SUCCESSFUL);
 		}
-		else
-		{ // logout for account failed, but disconnect the sender anyway
-			super.performService(localScope);
-			return new LogoutStatusResponse(LOGOUT_FAILED_IP_MISMATCH);
-		}
+		
+		super.performService(localScope);
+		return new LogoutStatusResponse(LOGOUT_FAILED_IP_MISMATCH);
 	}
 
 	/**
