@@ -2,9 +2,7 @@ package ecologylab.oodss.authentication.nio;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
-import java.nio.channels.SocketChannel;
 
 import ecologylab.collections.Scope;
 import ecologylab.oodss.authentication.OnlineAuthenticator;
@@ -14,7 +12,6 @@ import ecologylab.oodss.authentication.messages.Logout;
 import ecologylab.oodss.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.oodss.distributed.common.ServerConstants;
 import ecologylab.oodss.distributed.server.NIODatagramAuthServer;
-import ecologylab.oodss.distributed.server.NIOServerProcessor;
 import ecologylab.oodss.distributed.server.clientsessionmanager.DatagramClientSessionManager;
 import ecologylab.oodss.logging.AuthLogging;
 import ecologylab.oodss.logging.AuthenticationOp;

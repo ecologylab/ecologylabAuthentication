@@ -1,6 +1,5 @@
 package ecologylab.oodss.logging;
 
-import ecologylab.oodss.logging.Logging;
 
 /**
  * Interface for classes that will fire logging events based on authentication events.
