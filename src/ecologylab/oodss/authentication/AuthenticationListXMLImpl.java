@@ -8,6 +8,9 @@ import java.util.HashMap;
 import ecologylab.oodss.authentication.translationScope.UserTranslationScope;
 import ecologylab.oodss.exceptions.SaveFailedException;
 import ecologylab.serialization.SaverState;
+import ecologylab.serialization.annotations.simpl_map;
+import ecologylab.serialization.annotations.simpl_scalar;
+import ecologylab.serialization.annotations.simpl_scope;
 
 /**
  * Contains a HashMap of AuthenticationListEntry's that are hashed on their user key values. Raw

@@ -9,7 +9,8 @@ import ecologylab.oodss.authentication.User;
 import ecologylab.oodss.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.oodss.distributed.server.clientsessionmanager.BaseSessionManager;
 import ecologylab.oodss.messages.RequestMessage;
-import ecologylab.serialization.simpl_inherit;
+import ecologylab.serialization.annotations.simpl_composite;
+import ecologylab.serialization.annotations.simpl_inherit;
 
 /**
  * Used to log into a server that requires authentication; carries username and password information

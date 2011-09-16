@@ -5,7 +5,8 @@ package ecologylab.appframework.types.pref;
 
 import ecologylab.appframework.types.prefs.Pref;
 import ecologylab.oodss.authentication.AuthenticationListXMLImpl;
-import ecologylab.serialization.simpl_inherit;
+import ecologylab.serialization.annotations.simpl_composite;
+import ecologylab.serialization.annotations.simpl_inherit;
 
 /**
  * A preference that is an AuthenticationList.

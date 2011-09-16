@@ -1,5 +1,6 @@
 package ecologylab.oodss.distributed.server;
 
+import java.io.File;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ import ecologylab.oodss.authentication.registryobjects.AuthServerRegistryObjects
 import ecologylab.oodss.logging.AuthLogging;
 import ecologylab.oodss.logging.AuthenticationOp;
 import ecologylab.oodss.logging.Logging;
+import ecologylab.serialization.Format;
 import ecologylab.serialization.SIMPLTranslationException;
 import ecologylab.serialization.TranslationScope;
 
@@ -44,7 +46,7 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 			server = new NIODatagramAuthServer(	portNumber,
 																					translationScope,
 																					objectRegistry,
-																					(AuthenticationList) translationScope.deserialize(authListFileName),
+																					(AuthenticationList) translationScope.deserialize(new File(authListFileName), Format.XML),
 																					useCompression);
 		}
 		catch (SIMPLTranslationException e)

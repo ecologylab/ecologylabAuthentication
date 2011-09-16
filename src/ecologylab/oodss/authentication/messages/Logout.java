@@ -9,7 +9,8 @@ import ecologylab.oodss.authentication.User;
 import ecologylab.oodss.authentication.registryobjects.AuthServerRegistryObjects;
 import ecologylab.oodss.distributed.server.clientsessionmanager.BaseSessionManager;
 import ecologylab.oodss.messages.DisconnectRequest;
-import ecologylab.serialization.simpl_inherit;
+import ecologylab.serialization.annotations.simpl_composite;
+import ecologylab.serialization.annotations.simpl_inherit;
 
 /**
  * A Logout message indicates that the connnected client no longer wants to be connected.

@@ -1,7 +1,7 @@
 package ecologylab.oodss.logging;
 
 import ecologylab.oodss.authentication.messages.AuthMessages;
-import ecologylab.oodss.logging.MixedInitiativeOp;
+import ecologylab.serialization.annotations.simpl_scalar;
 
 /**
  * Logging operation that indicates when a user logs in or out of the server.

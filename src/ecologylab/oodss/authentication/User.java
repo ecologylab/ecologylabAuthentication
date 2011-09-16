@@ -10,9 +10,10 @@ import java.util.Scanner;
 
 import biz.source_code.Base64Coder;
 import ecologylab.serialization.ElementState;
-import ecologylab.serialization.ElementState.xml_other_tags;
-import ecologylab.serialization.simpl_inherit;
-import ecologylab.serialization.types.element.Mappable;
+import ecologylab.serialization.annotations.simpl_inherit;
+import ecologylab.serialization.annotations.simpl_other_tags;
+import ecologylab.serialization.annotations.simpl_scalar;
+import ecologylab.serialization.types.element.IMappable;
 
 /**
  * An entry for an AuthenticationList. Contains a user key matched with a password (which is stored
@@ -24,8 +25,8 @@ import ecologylab.serialization.types.element.Mappable;
  * @author Zachary O. Toups (zach@ecologylab.net)
  */
 public @simpl_inherit
-@xml_other_tags("authentication_list_entry")
-class User extends ElementState implements AuthLevels, Mappable<String>, Comparable<User>
+@simpl_other_tags("authentication_list_entry")
+class User extends ElementState implements AuthLevels, IMappable<String>, Comparable<User>
 {
 	/**
 	 * The user's key in the backing store. This key must be provided, along with the password, to
@@ -38,7 +39,7 @@ class User extends ElementState implements AuthLevels, Mappable<String>, Compara
 	 * historical name for this field.
 	 */
 	@simpl_scalar
-	@xml_other_tags("username")
+	@simpl_other_tags("username")
 	private String	userKey		= "";
 
 	/**

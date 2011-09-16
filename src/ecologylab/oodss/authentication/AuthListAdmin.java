@@ -10,30 +10,28 @@ import java.io.InputStreamReader;
 
 import ecologylab.oodss.authentication.translationScope.AuthServerTranslations;
 import ecologylab.oodss.exceptions.SaveFailedException;
+import ecologylab.serialization.ClassDescriptor;
+import ecologylab.serialization.Format;
 import ecologylab.serialization.SIMPLTranslationException;
-import ecologylab.serialization.TranslationScope;
-import ecologylab.serialization.XMLTools;
 
 /**
- * This program allows users to create and modify AuthenticationList files so that they do not have
- * to be stored as plaintext.
+ * This program allows users to create and modify AuthenticationList files so
+ * that they do not have to be stored as plaintext.
  * 
  * @author Zachary O. Toups (zach@ecologylab.net)
  * 
  */
-public class AuthListAdmin
-{
+public class AuthListAdmin {
 	/**
 	 * @param args
 	 * @throws IOException
 	 * @throws SIMPLTranslationException
 	 */
-	public static void main(String[] args) throws IOException, SecurityException,
-			SIMPLTranslationException
-	{
-		if (args.length < 1)
-		{
-			System.out.println("You must supply at least one parameter. Parameter list is as follows:");
+	public static void main(String[] args) throws IOException,
+			SecurityException, SIMPLTranslationException {
+		if (args.length < 1) {
+			System.out
+					.println("You must supply at least one parameter. Parameter list is as follows:");
 			System.out
 					.println("AuthListAdmin <authentication list filename> <administrator username> <new users file> | <new username>");
 			System.exit(1);
@@ -51,25 +49,21 @@ public class AuthListAdmin
 
 		File xmlFile = new File(filename);
 
-		if (xmlFile.exists())
-		{
-			try
-			{
-				authList = (AuthenticationListXMLImpl) AuthServerTranslations.get().deserialize(
-						xmlFile);
-			}
-			catch (SIMPLTranslationException e)
-			{
-				System.err.println("There was an error translating the authentication list: " + filename);
+		if (xmlFile.exists()) {
+			try {
+				authList = (AuthenticationListXMLImpl) AuthServerTranslations
+						.get().deserialize(xmlFile, Format.XML);
+			} catch (SIMPLTranslationException e) {
+				System.err
+						.println("There was an error translating the authentication list: "
+								+ filename);
 
 				e.printStackTrace();
 			}
-		}
-		else
-		{
+		} else {
 			// no file with that name, ask if user wants to create
-			while (resp.length() < 1 || (resp.charAt(0) != 'y' && resp.charAt(0) != 'n'))
-			{
+			while (resp.length() < 1
+					|| (resp.charAt(0) != 'y' && resp.charAt(0) != 'n')) {
 				System.out
 						.println("The file "
 								+ filename
@@ -80,25 +74,19 @@ public class AuthListAdmin
 				resp = resp.toLowerCase();
 			}
 
-			if (resp.charAt(0) == 'n')
-			{
+			if (resp.charAt(0) == 'n') {
 				System.out.println("No file created.");
 				System.exit(1);
-			}
-			else
-			{
+			} else {
 				System.out.println("Creating file....");
 				boolean success;
 
 				success = xmlFile.createNewFile();
 
-				if (!success)
-				{
+				if (!success) {
 					System.out.println("File exists somehow.");
 					System.exit(1);
-				}
-				else
-				{
+				} else {
 					System.out.println("...file created.");
 					newFile = true;
 				}
@@ -109,27 +97,21 @@ public class AuthListAdmin
 			authList = new AuthenticationListXMLImpl();
 		}
 
-		if (authList != null)
-		{
+		if (authList != null) {
 			System.out.println("authentication list created.");
 			// the user must now authenticate
 			String username = null;
-			if (args[1] != null)
-			{
+			if (args[1] != null) {
 				username = args[1];
 			}
 
-			while (!loggedIn)
-			{
+			while (!loggedIn) {
 				// we need a username
-				if (!newFile)
-				{
+				if (!newFile) {
 					System.out
 							.println("Please supply a username and password that has administrator privileges for this file (not the computer containing this file):");
 					username = br.readLine();
-				}
-				else if (username == null)
-				{
+				} else if (username == null) {
 					System.out
 							.println("Please supply a username that will be an administrator user for this file:");
 					username = br.readLine();
@@ -137,22 +119,20 @@ public class AuthListAdmin
 
 				String password = null;
 
-				while (password == null)
-				{
+				while (password == null) {
 					System.out.println("Enter password: ");
 
 					password = br.readLine();
 
-					if (newFile)
-					{
+					if (newFile) {
 						System.out.println("Re-enter password: ");
 
 						String secondPass = br.readLine();
 
-						if (!secondPass.equals(password))
-						{
+						if (!secondPass.equals(password)) {
 							password = null;
-							System.out.println("Passwords do not match, try again.");
+							System.out
+									.println("Passwords do not match, try again.");
 						}
 					}
 				}
@@ -160,25 +140,20 @@ public class AuthListAdmin
 				userEntry = new User(username, password);
 
 				// have password and username!
-				if (!newFile && authList.isValid(userEntry)
-						&& authList.getAccessLevel(userEntry) == AuthLevels.ADMINISTRATOR)
-				{
+				if (!newFile
+						&& authList.isValid(userEntry)
+						&& authList.getAccessLevel(userEntry) == AuthLevels.ADMINISTRATOR) {
 					// user is valid!
 					loggedIn = true;
-				}
-				else if (newFile)
-				{
+				} else if (newFile) {
 					loggedIn = true;
 					System.out.println("adding administrator " + username);
 
 					userEntry.setLevel(AuthLevels.ADMINISTRATOR);
 
-					try
-					{
+					try {
 						authList.addUser(userEntry);
-					}
-					catch (SaveFailedException e)
-					{
+					} catch (SaveFailedException e) {
 						e.printStackTrace();
 					}
 				}
@@ -187,29 +162,25 @@ public class AuthListAdmin
 			// now logged in and ready to make changes!
 			boolean doneEntering = false;
 
-			while (!doneEntering)
-			{
+			while (!doneEntering) {
 				System.out.println("enter user name to add (\\q to quit): ");
 				String newUser = br.readLine();
 
-				if ("\\q".equals(newUser))
-				{
+				if ("\\q".equals(newUser)) {
 					doneEntering = true;
 				}
 
-				if (!newUser.contains("/") && !newUser.contains("\\"))
-				{
+				if (!newUser.contains("/") && !newUser.contains("\\")) {
 					String password = null;
 
-					while (password == null)
-					{
+					while (password == null) {
 						System.out.println("Enter password (\\q to quit): ");
 
 						password = br.readLine();
 
-						if ("\\q".equals(password))
-						{
-							System.out.println("Username " + newUser + " not added.");
+						if ("\\q".equals(password)) {
+							System.out.println("Username " + newUser
+									+ " not added.");
 
 							doneEntering = true;
 							break;
@@ -219,41 +190,34 @@ public class AuthListAdmin
 
 						String secondPass = br.readLine();
 
-						if (!secondPass.equals(password))
-						{
+						if (!secondPass.equals(password)) {
 							password = null;
-							System.out.println("Passwords do not match, try again.");
+							System.out
+									.println("Passwords do not match, try again.");
 						}
 					}
 
-					if (username != null && password != null)
-					{
+					if (username != null && password != null) {
 						System.out.println("adding user: " + newUser);
 
-						try
-						{
+						try {
 							authList.addUser(new User(newUser, password));
-						}
-						catch (SaveFailedException e)
-						{
+						} catch (SaveFailedException e) {
 							e.printStackTrace();
 						}
 					}
-				}
-				else
-				{
-					System.out.println("Error in username; cannot contain / or \\.");
+				} else {
+					System.out
+							.println("Error in username; cannot contain / or \\.");
 				}
 			}
 
 			System.out.println("Saving file: " + filename);
-			
-			authList.serialize(xmlFile);
+
+			ClassDescriptor.serialize(authList, xmlFile, Format.XML);
 
 			System.out.println("Finished.");
-		}
-		else
-		{
+		} else {
 			System.err.println("There was an error: " + filename);
 		}
 	}

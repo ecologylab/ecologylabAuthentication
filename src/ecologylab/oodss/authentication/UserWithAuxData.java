@@ -3,7 +3,8 @@
  */
 package ecologylab.oodss.authentication;
 
-import ecologylab.serialization.simpl_inherit;
+import ecologylab.serialization.annotations.simpl_inherit;
+import ecologylab.serialization.annotations.simpl_scalar;
 
 /**
  * Subclass of User that provides an email address as auxiliary information. Email address may be

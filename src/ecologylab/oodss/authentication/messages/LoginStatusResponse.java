@@ -7,7 +7,7 @@ import ecologylab.collections.Scope;
 import ecologylab.generic.BooleanSlot;
 import ecologylab.oodss.authentication.registryobjects.AuthClientRegistryObjects;
 import ecologylab.oodss.messages.ExplanationResponse;
-import ecologylab.serialization.simpl_inherit;
+import ecologylab.serialization.annotations.simpl_inherit;
 
 /**
  * Indicates the response from the server regarding an attempt to log in.
