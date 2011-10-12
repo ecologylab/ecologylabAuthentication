@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
 
 import ecologylab.oodss.authentication.translationScope.AuthServerTranslations;
 import ecologylab.oodss.exceptions.SaveFailedException;
-import ecologylab.serialization.ClassDescriptor;
 import ecologylab.serialization.Format;
 import ecologylab.serialization.SIMPLTranslationException;
+import ecologylab.serialization.SimplTypesScope;
 
 /**
  * This program allows users to create and modify AuthenticationList files so
@@ -214,7 +214,7 @@ public class AuthListAdmin {
 
 			System.out.println("Saving file: " + filename);
 
-			ClassDescriptor.serialize(authList, xmlFile, Format.XML);
+			SimplTypesScope.serialize(authList, xmlFile, Format.XML);
 
 			System.out.println("Finished.");
 		} else {

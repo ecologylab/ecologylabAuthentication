@@ -20,7 +20,7 @@ import ecologylab.oodss.logging.AuthenticationOp;
 import ecologylab.oodss.logging.Logging;
 import ecologylab.serialization.Format;
 import ecologylab.serialization.SIMPLTranslationException;
-import ecologylab.serialization.TranslationScope;
+import ecologylab.serialization.SimplTypesScope;
 
 public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIODatagramServer<S>
 		implements AuthServerRegistryObjects, AuthMessages, AuthLogging, Authenticatable<A>
@@ -36,7 +36,7 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 	protected OnlineAuthenticatorHashMapImpl<A>	authenticator	= null;
 
 	public static NIODatagramAuthServer getInstance(int portNumber,
-			TranslationScope translationScope, Scope objectRegistry, String authListFileName,
+			SimplTypesScope translationScope, Scope objectRegistry, String authListFileName,
 			boolean useCompression)
 	{
 		NIODatagramAuthServer server = null;
@@ -58,13 +58,13 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 	}
 
 	public static NIODatagramAuthServer getInstance(int portNumber,
-			TranslationScope translationScope, Scope objectRegistry, String authListFileName)
+			SimplTypesScope translationScope, Scope objectRegistry, String authListFileName)
 	{
 		return getInstance(portNumber, translationScope, objectRegistry, authListFileName, false);
 	}
 
 	public static NIODatagramAuthServer getInstance(int portNumber,
-			TranslationScope translationScope, Scope objectRegistry, AuthenticationList authList,
+			SimplTypesScope translationScope, Scope objectRegistry, AuthenticationList authList,
 			boolean useCompression)
 	{
 		NIODatagramAuthServer server = null;
@@ -78,13 +78,13 @@ public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIOD
 	}
 
 	public static NIODatagramAuthServer getInstance(int portNumber,
-			TranslationScope translationScope, Scope objectRegistry, AuthenticationList authList)
+			SimplTypesScope translationScope, Scope objectRegistry, AuthenticationList authList)
 	{
 		return getInstance(portNumber, translationScope, objectRegistry, authList, false);
 	}
 
 	protected NIODatagramAuthServer(int portNumber,
-																	TranslationScope translationScope,
+																	SimplTypesScope translationScope,
 																	S objectRegistry,
 																	AuthenticationList<A> authList,
 																	boolean useCompression)

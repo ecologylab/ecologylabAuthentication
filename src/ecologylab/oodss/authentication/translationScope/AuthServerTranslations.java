@@ -2,7 +2,7 @@ package ecologylab.oodss.authentication.translationScope;
 
 import ecologylab.appframework.types.pref.AuthTranslations;
 import ecologylab.oodss.messages.DefaultServicesTranslations;
-import ecologylab.serialization.TranslationScope;
+import ecologylab.serialization.SimplTypesScope;
 
 /**
  * Contains all of the information necessary to translate XML objects used in an authenticating
@@ -15,7 +15,7 @@ public class AuthServerTranslations
 {
 	protected static final String		NAME											= "authentication";
 
-	static final TranslationScope[]	OTHER_TRANSLATION_SCOPES	=
+	static final SimplTypesScope[]	OTHER_TRANSLATION_SCOPES	=
 																														{ DefaultServicesTranslations.get(),
 			UserTranslationScope.get()														};
 
@@ -27,16 +27,16 @@ public class AuthServerTranslations
 			ecologylab.oodss.authentication.messages.LogoutStatusResponse.class,
 			ecologylab.oodss.authentication.AuthenticationListXMLImpl.class };
 
-	public static TranslationScope get()
+	public static SimplTypesScope get()
 	{
-		return TranslationScope.get(NAME, OTHER_TRANSLATION_SCOPES, TRANSLATIONS);
+		return SimplTypesScope.get(NAME, OTHER_TRANSLATION_SCOPES, TRANSLATIONS);
 	}
 
-	public static TranslationScope get(String customName, TranslationScope otherSpaceToCompose)
+	public static SimplTypesScope get(String customName, SimplTypesScope otherSpaceToCompose)
 	{
-		TranslationScope[] spaces =
+		SimplTypesScope[] spaces =
 		{ DefaultServicesTranslations.get(), AuthTranslations.get(), otherSpaceToCompose };
 
-		return TranslationScope.get(customName, spaces, TRANSLATIONS);
+		return SimplTypesScope.get(customName, spaces, TRANSLATIONS);
 	}
 }

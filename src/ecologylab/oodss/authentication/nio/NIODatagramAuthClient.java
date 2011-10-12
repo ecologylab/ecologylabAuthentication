@@ -14,7 +14,7 @@ import ecologylab.oodss.authentication.registryobjects.AuthClientRegistryObjects
 import ecologylab.oodss.distributed.client.NIODatagramClient;
 import ecologylab.oodss.distributed.exception.MessageTooLargeException;
 import ecologylab.oodss.messages.ResponseMessage;
-import ecologylab.serialization.TranslationScope;
+import ecologylab.serialization.SimplTypesScope;
 
 /**
  * Authentication subclass of NIODatagram Client.
@@ -49,7 +49,7 @@ AuthClientRegistryObjects, AuthConstants, AuthMessages
 	 * @param timeout timeout of messages that are not responded to
 	 */
 	public NIODatagramAuthClient(InetSocketAddress serverAddress,
-			InetSocketAddress localAddress, TranslationScope translationScope,
+			InetSocketAddress localAddress, SimplTypesScope translationScope,
 			S objectRegistry, User entry, boolean useCompression, int timeout)
 	{
 		super(serverAddress, localAddress, translationScope, objectRegistry, useCompression, timeout);
@@ -73,7 +73,7 @@ AuthClientRegistryObjects, AuthConstants, AuthMessages
 	 * @param timeout timeout of messages that are not responded to
 	 */
 	public NIODatagramAuthClient(InetSocketAddress serverAddress,
-										  TranslationScope translationScope, S objectRegistry,
+										  SimplTypesScope translationScope, S objectRegistry,
 										  User entry, boolean useCompression, int timeout)
 	{
 		super(serverAddress, translationScope, objectRegistry, useCompression, timeout);
@@ -96,7 +96,7 @@ AuthClientRegistryObjects, AuthConstants, AuthMessages
 	 * @param timeout timeout of messages that are not responded to
 	 */
 	public NIODatagramAuthClient(InetSocketAddress serverAddress,
-			  TranslationScope translationScope, S objectRegistry, boolean useCompression,
+			  SimplTypesScope translationScope, S objectRegistry, boolean useCompression,
 			  int timeout)
 	{
 		this(serverAddress, translationScope, objectRegistry, null, useCompression, timeout);
@@ -115,7 +115,7 @@ AuthClientRegistryObjects, AuthConstants, AuthMessages
 	 * @param timeout timeout of messages that are not responded to
 	 */
 	public NIODatagramAuthClient(InetSocketAddress serverAddress,
-			InetSocketAddress localAddress, TranslationScope translationScope,
+			InetSocketAddress localAddress, SimplTypesScope translationScope,
 			S objectRegistry, boolean useCompression, int timeout)
 	{
 		this(serverAddress, localAddress, translationScope, objectRegistry, null, useCompression, timeout);

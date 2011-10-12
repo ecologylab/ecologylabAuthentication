@@ -8,7 +8,7 @@ import ecologylab.generic.Debug;
 import ecologylab.oodss.authentication.AuthenticationList;
 import ecologylab.oodss.authentication.AuthenticationListXMLImpl;
 import ecologylab.oodss.authentication.User;
-import ecologylab.serialization.TranslationScope;
+import ecologylab.serialization.SimplTypesScope;
 
 /**
  * Translations for the pref/meta_pref system.
@@ -31,7 +31,7 @@ public class AuthTranslations extends Debug
 
 																							};
 	
-	private static final TranslationScope[] INHERITED_TRANSLATIONS = { PrefsTranslationsProvider.get() };
+	private static final SimplTypesScope[] INHERITED_TRANSLATIONS = { PrefsTranslationsProvider.get() };
 
 	/**
 	 * Just prevent anyone from new'ing this.
@@ -43,9 +43,9 @@ public class AuthTranslations extends Debug
 	/**
 	 * Get the translation space
 	 */
-	public static TranslationScope get()
+	public static SimplTypesScope get()
 	{
-		return TranslationScope.get(NAME, INHERITED_TRANSLATIONS,
+		return SimplTypesScope.get(NAME, INHERITED_TRANSLATIONS,
 				TRANSLATIONS, PrefSetAuthClassProvider.STATIC_INSTANCE.provideClasses());
 	}
 }

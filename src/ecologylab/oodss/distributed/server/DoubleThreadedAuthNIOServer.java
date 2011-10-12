@@ -23,7 +23,7 @@ import ecologylab.oodss.exceptions.SaveFailedException;
 import ecologylab.oodss.logging.AuthLogging;
 import ecologylab.oodss.logging.AuthenticationOp;
 import ecologylab.oodss.logging.Logging;
-import ecologylab.serialization.TranslationScope;
+import ecologylab.serialization.SimplTypesScope;
 
 /**
  * An authenticating server that uses NIO and two threads (one for handling IO, the other for
@@ -57,7 +57,7 @@ public class DoubleThreadedAuthNIOServer<A extends User> extends
 	 * @throws BindException
 	 */
 	public DoubleThreadedAuthNIOServer(int portNumber, InetAddress[] inetAddress,
-			TranslationScope requestTranslationSpace, Scope objectRegistry, int idleConnectionTimeout,
+			SimplTypesScope requestTranslationSpace, Scope objectRegistry, int idleConnectionTimeout,
 			int maxPacketSize, OnlineAuthenticator<A> authenticator) throws IOException, BindException
 	{
 		// MODEL for translation space
@@ -81,7 +81,7 @@ public class DoubleThreadedAuthNIOServer<A extends User> extends
 	 */
 	@Override
 	protected AuthClientSessionManager generateContextManager(String sessionId, SelectionKey sk,
-			TranslationScope translationScope, Scope registry)
+			SimplTypesScope translationScope, Scope registry)
 	{
 		try
 		{

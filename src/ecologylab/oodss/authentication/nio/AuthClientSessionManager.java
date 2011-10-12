@@ -20,7 +20,7 @@ import ecologylab.oodss.messages.BadSemanticContentResponse;
 import ecologylab.oodss.messages.ExplanationResponse;
 import ecologylab.oodss.messages.RequestMessage;
 import ecologylab.oodss.messages.ResponseMessage;
-import ecologylab.serialization.TranslationScope;
+import ecologylab.serialization.SimplTypesScope;
 
 /**
  * Stores information about the connection context for the client, including authentication status.
@@ -54,7 +54,7 @@ public class AuthClientSessionManager extends ClientSessionManager implements Se
 	 */
 	@SuppressWarnings("unchecked")
 	public AuthClientSessionManager(String token, int maxPacketSize, NIOServerIOThread server,
-			NIOServerProcessor frontend, SelectionKey sk, TranslationScope translationScope,
+			NIOServerProcessor frontend, SelectionKey sk, SimplTypesScope translationScope,
 			Scope registry, AuthLogging servicesServer, OnlineAuthenticator authenticator)
 	{
 		super(token, maxPacketSize, server, frontend, sk, translationScope, registry);

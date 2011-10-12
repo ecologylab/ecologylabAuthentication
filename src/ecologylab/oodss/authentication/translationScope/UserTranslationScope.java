@@ -1,6 +1,6 @@
 package ecologylab.oodss.authentication.translationScope;
 
-import ecologylab.serialization.TranslationScope;
+import ecologylab.serialization.SimplTypesScope;
 
 /**
  * Contains all of the information necessary to translate XML objects used in an authenticating
@@ -17,8 +17,8 @@ public class UserTranslationScope
 																							{ ecologylab.oodss.authentication.User.class,
 			ecologylab.oodss.authentication.UserWithAuxData.class };
 
-	public static TranslationScope get()
+	public static SimplTypesScope get()
 	{
-		return TranslationScope.get(NAME, TRANSLATIONS);
+		return SimplTypesScope.get(NAME, TRANSLATIONS);
 	}
 }

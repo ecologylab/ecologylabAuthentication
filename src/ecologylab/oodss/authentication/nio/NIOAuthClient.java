@@ -18,7 +18,7 @@ import ecologylab.oodss.authentication.translationScope.AuthServerTranslations;
 import ecologylab.oodss.distributed.client.NIOClient;
 import ecologylab.oodss.distributed.exception.MessageTooLargeException;
 import ecologylab.oodss.messages.ResponseMessage;
-import ecologylab.serialization.TranslationScope;
+import ecologylab.serialization.SimplTypesScope;
 
 /**
  * A client application that uses authentication and communicates using NIO.
@@ -58,7 +58,7 @@ public class NIOAuthClient<S extends Scope, A extends User> extends NIOClient<S>
 	 *          conjunction with modifying the contents of the referenced message.
 	 * @throws IOException
 	 */
-	public NIOAuthClient(String server, int port, TranslationScope messageSpace, S objectRegistry)
+	public NIOAuthClient(String server, int port, SimplTypesScope messageSpace, S objectRegistry)
 			throws IOException
 	{
 		this(server, port, messageSpace, objectRegistry, null);
@@ -74,7 +74,7 @@ public class NIOAuthClient<S extends Scope, A extends User> extends NIOClient<S>
 	 * @param entry
 	 * @throws IOException
 	 */
-	public NIOAuthClient(String server, int port, TranslationScope messageSpace, S objectRegistry,
+	public NIOAuthClient(String server, int port, SimplTypesScope messageSpace, S objectRegistry,
 			A entry) throws IOException
 	{
 		super(server, port, AuthServerTranslations.get("AuthClient", messageSpace), objectRegistry);
