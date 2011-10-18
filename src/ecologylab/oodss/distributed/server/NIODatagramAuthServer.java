@@ -18,9 +18,9 @@ import ecologylab.oodss.authentication.registryobjects.AuthServerRegistryObjects
 import ecologylab.oodss.logging.AuthLogging;
 import ecologylab.oodss.logging.AuthenticationOp;
 import ecologylab.oodss.logging.Logging;
-import ecologylab.serialization.Format;
 import ecologylab.serialization.SIMPLTranslationException;
 import ecologylab.serialization.SimplTypesScope;
+import ecologylab.serialization.formatenums.Format;
 
 public class NIODatagramAuthServer<A extends User, S extends Scope> extends NIODatagramServer<S>
 		implements AuthServerRegistryObjects, AuthMessages, AuthLogging, Authenticatable<A>

@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
 
 import ecologylab.oodss.authentication.translationScope.AuthServerTranslations;
 import ecologylab.oodss.exceptions.SaveFailedException;
-import ecologylab.serialization.Format;
 import ecologylab.serialization.SIMPLTranslationException;
 import ecologylab.serialization.SimplTypesScope;
+import ecologylab.serialization.formatenums.Format;
 
 /**
  * This program allows users to create and modify AuthenticationList files so
