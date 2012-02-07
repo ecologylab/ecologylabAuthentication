@@ -5,6 +5,7 @@ package ecologylab.appframework.types.pref;
 
 import ecologylab.appframework.types.prefs.Pref;
 import ecologylab.appframework.types.prefs.PrefSetBaseClassProvider;
+import ecologylab.platformspecifics.FundamentalPlatformSpecifics;
 import ecologylab.serialization.TranslationsClassProvider;
 
 /**
@@ -31,6 +32,6 @@ public class PrefSetAuthClassProvider extends PrefSetBaseClassProvider
 		Class[]													authPrefTranslations	=
 		{ PrefAuthList.class };
 		
-		return TranslationsClassProvider.combineClassArrays(super.specificSuppliedClasses(), authPrefTranslations);
+		return TranslationsClassProvider.combineClassArrays(super.specificSuppliedClasses(), authPrefTranslations, FundamentalPlatformSpecifics.get().additionalPrefSetBaseTranslations());
 	}
 }
