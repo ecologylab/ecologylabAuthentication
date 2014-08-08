@@ -4,10 +4,10 @@
 package ecologylab.appframework.types.pref;
 
 import ecologylab.appframework.types.prefs.PrefsTranslationsProvider;
+import ecologylab.authentication.AuthenticationList;
+import ecologylab.authentication.AuthenticationListXMLImpl;
+import ecologylab.authentication.User;
 import ecologylab.generic.Debug;
-import ecologylab.oodss.authentication.AuthenticationList;
-import ecologylab.oodss.authentication.AuthenticationListXMLImpl;
-import ecologylab.oodss.authentication.User;
 import ecologylab.serialization.SimplTypesScope;
 
 /**

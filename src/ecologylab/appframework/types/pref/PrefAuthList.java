@@ -4,7 +4,7 @@
 package ecologylab.appframework.types.pref;
 
 import ecologylab.appframework.types.prefs.Pref;
-import ecologylab.oodss.authentication.AuthenticationListXMLImpl;
+import ecologylab.authentication.AuthenticationListXMLImpl;
 import ecologylab.serialization.annotations.simpl_composite;
 import ecologylab.serialization.annotations.simpl_inherit;
 
